@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import List
 
 from environs import Env
 
@@ -14,8 +15,9 @@ class DbConfig:
 @dataclass
 class TgBot:
     token: str
-    admin_ids: list[int]
+    admin_ids: List[int]
     use_redis: bool
+    webapp_url: str
 
 
 @dataclass
@@ -39,6 +41,7 @@ def load_config(path: str = None):
             token=env.str("BOT_TOKEN"),
             admin_ids=list(map(int, env.list("ADMINS"))),
             use_redis=env.bool("USE_REDIS"),
+            webapp_url=env.str("WEBAPP_URL"),
         ),
         db=DbConfig(
             host=env.str('DB_HOST'),
@@ -46,5 +49,5 @@ def load_config(path: str = None):
             user=env.str('DB_USER'),
             database=env.str('DB_NAME')
         ),
-        misc=Miscellaneous()
+        misc=Miscellaneous(),
     )
