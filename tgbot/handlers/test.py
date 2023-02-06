@@ -1,3 +1,5 @@
+import json
+
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.utils.markdown import hcode
@@ -29,6 +31,7 @@ class TestHandler(BaseHandler):
             hcode(message.text)
         ]
         await message.answer('\n'.join(text))
+        await message.answer(message.web_app_data.data)
 
     def register_methods(self):
         self.dp.register_message_handler(TestHandler.bot_echo)
