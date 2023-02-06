@@ -11,6 +11,7 @@ from tgbot.handlers.admin import AdminHandler
 from tgbot.handlers.test import TestHandler
 from tgbot.handlers.user import UserHandler
 from tgbot.middlewares.environment import EnvironmentMiddleware
+from tgbot.persistance import setup, shutdown
 
 logger = logging.getLogger(__name__)
 handlers = []
@@ -48,13 +49,15 @@ async def main():
     register_all_filters(dp)
     register_all_handlers(dp)
 
-    # start
+    await setup(
+        f'postgresql+asyncpg://{config.db.user}:{config.db.password}@{config.db.host}/{config.db.database}')
     try:
         await dp.start_polling()
     finally:
         await dp.storage.close()
         await dp.storage.wait_closed()
         await bot.session.close()
+        await shutdown()
 
 
 if __name__ == '__main__':
