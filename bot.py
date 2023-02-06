@@ -10,7 +10,7 @@ from tgbot.filters.admin import AdminFilter
 from tgbot.handlers.admin import AdminHandler
 from tgbot.handlers.test import TestHandler
 from tgbot.handlers.user import UserHandler
-from tgbot.middlewares.environment import EnvironmentMiddleware
+from tgbot.middlewares.environment_middleware import EnvironmentMiddleware
 from tgbot.persistance import setup, shutdown
 
 logger = logging.getLogger(__name__)
