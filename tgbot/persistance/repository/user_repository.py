@@ -6,6 +6,13 @@ from tgbot.persistance.models import UserModel
 
 
 class UserRepository:
+    _instance = None
+
+    @classmethod
+    def get_instance(cls):
+        if cls._instance is None:
+            cls._instance = UserRepository()
+        return cls._instance
 
     @staticmethod
     async def create(user: UserModel):

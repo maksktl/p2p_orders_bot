@@ -8,9 +8,16 @@ logger = logging.getLogger(__name__)
 
 
 class UserService:
+    _instance = None
+
+    @classmethod
+    def get_instance(cls):
+        if cls._instance is None:
+            cls._instance = UserService()
+        return cls._instance
 
     def __init__(self):
-        self.__user_repository = UserRepository
+        self.__user_repository = UserRepository.get_instance()
 
     def get_user(self, id) -> UserFullDto:
         user_model = await self.__user_repository.get_by_id(id)
