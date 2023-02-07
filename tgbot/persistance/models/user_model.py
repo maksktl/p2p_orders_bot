@@ -1,3 +1,5 @@
+from enum import unique
+
 from sqlalchemy import sql, Column, String, BIGINT
 
 from tgbot.persistance.models import TimedBaseModel
@@ -8,15 +10,15 @@ class UserModel(TimedBaseModel):
     __tablename__ = 'user'
     query: sql.Select
 
-    name = Column(String(64), nullable=False)
+    name = Column(String(64), nullable=False, index=True)
     surname = Column(String(64))
     middle_name = Column(String(64))
     email = Column(String(256))
-    telegram_id = Column(BIGINT)
+    telegram_id = Column(BIGINT, unique=True, index=True)
     telegram_url = Column(String)
     phone_number = Column(String(16))
 
-    def __init__(self, user_dto: UserDto):
+    def fill(self, user_dto: UserDto):
         self.name = user_dto.name
         self.surname = user_dto.surname
         self.middle_name = user_dto.middle_name

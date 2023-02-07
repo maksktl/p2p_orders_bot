@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from uuid import UUID
-from aiogram.types import User
 
 
 @dataclass
@@ -14,7 +13,7 @@ class UserDto:
     telegram_url: str = None
     phone_number: str = None
 
-    def fill_from_user(self, user: User):
+    def fill_from_user(self, user):
         self.name = user.first_name
         self.surname = user.last_name
         self.telegram_id = user.id

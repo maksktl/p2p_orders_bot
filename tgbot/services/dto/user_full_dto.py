@@ -1,8 +1,6 @@
 from dataclasses import dataclass
 from uuid import UUID
 
-from tgbot.persistance.models import UserModel
-
 
 @dataclass
 class UserFullDto:
@@ -15,7 +13,7 @@ class UserFullDto:
     telegram_url: str
     phone_number: str
 
-    def __init__(self, model: UserModel):
+    def __init__(self, model):
         self.id = model.id
         self.name = model.name
         self.surname = model.name

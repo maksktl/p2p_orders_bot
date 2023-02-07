@@ -10,6 +10,7 @@ from tgbot.filters.admin import AdminFilter
 from tgbot.handlers.admin import AdminHandler
 from tgbot.handlers.test import TestHandler
 from tgbot.handlers.user import UserHandler
+from tgbot.middlewares.acl_middleware import ACLMiddleware
 from tgbot.middlewares.environment_middleware import EnvironmentMiddleware
 from tgbot.persistance import setup, shutdown
 
@@ -19,6 +20,7 @@ handlers = []
 
 def register_all_middlewares(dp, config):
     dp.setup_middleware(EnvironmentMiddleware(config=config))
+    dp.setup_middleware(ACLMiddleware())
 
 
 def register_all_filters(dp):
