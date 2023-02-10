@@ -5,7 +5,6 @@ from aiogram.dispatcher import FSMContext
 from aiogram.utils.markdown import hcode
 
 from tgbot.handlers.base import BaseHandler
-from tgbot.services.dto.user_configuration_dto import UserConfigurationDto
 from tgbot.services.user_configuration_service import UserConfigurationService
 
 
@@ -14,6 +13,7 @@ class TestHandler(BaseHandler):
 
     def __init__(self, dp: Dispatcher):
         super().__init__(dp)
+
     @staticmethod
     async def bot_echo(message: types.Message):
         text = [
@@ -42,8 +42,8 @@ class TestHandler(BaseHandler):
 
         await message.answer('☑️ Успешно применили новую конфигурацию для поиска связок')
 
-
     def register_methods(self):
         self.dp.register_message_handler(TestHandler.bot_echo)
-        self.dp.register_message_handler(TestHandler.apply_configuration, state="*", content_types=types.ContentTypes.WEB_APP_DATA)
+        self.dp.register_message_handler(TestHandler.apply_configuration, state="*",
+                                         content_types=types.ContentTypes.WEB_APP_DATA)
         self.dp.register_message_handler(TestHandler.bot_echo_all, state="*", content_types=types.ContentTypes.ANY)
