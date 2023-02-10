@@ -40,7 +40,7 @@ class TestHandler(BaseHandler):
         web_app_data = json.loads(message.web_app_data.data)
         await TestHandler.USER_CONFIGURATION_SERVICE.create_or_update(web_app_data, message.from_user.id)
 
-        await message.answer('Успешно применили новую конфигурацию для поиска связок')
+        await message.answer('☑️ Успешно применили новую конфигурацию для поиска связок')
 
 
     def register_methods(self):

@@ -53,7 +53,7 @@ class UserConfigurationService:
         if not configuration:
             user_conf = UserConfigurationModel()
             user_conf.fill(dto)
-            return UserConfigurationFullDto(await self.__user_configuration_repository.create(user_conf))
+            await self.__user_configuration_repository.create(user_conf)
+            return
 
-        configuration.update(dto)
-        return UserConfigurationFullDto(await self.__user_configuration_repository.update(configuration))
+        return await self.__user_configuration_repository.update(configuration, **dto.__dict__)
