@@ -1,6 +1,7 @@
-from sqlalchemy import sql, Column, String, UniqueConstraint
+from sqlalchemy import sql, Column, String, UniqueConstraint, orm
 from sqlalchemy.dialects.postgresql import UUID
 
+from tgbot.persistance import db
 from tgbot.persistance.models import TimedBaseModel
 
 
@@ -11,11 +12,13 @@ class StepModel(TimedBaseModel):
     )
 
     query: sql.Select
-    user_id = Column(UUID, nullable=False, index=True)
+    user_id = Column(UUID, db.ForeignKey("user.id"), nullable=False, index=True)
     strategy_type_buy = Column(String(8), nullable=False)
     strategy_type_sell = Column(String(8), nullable=False)
-    order_buy_id = Column(UUID, nullable=False, index=True)
-    order_sell_id = Column(UUID, nullable=False, index=True)
+    order_buy_id = Column(UUID, db.ForeignKey("stock_order.id"), nullable=False, index=True)
+    order_sell_id = Column(UUID, db.ForeignKey("stock_order.id"), nullable=False, index=True)
+    order_buy = orm.relationship('OrderModel', foreign_keys=[order_buy_id])
+    order_sell = orm.relationship('OrderModel', foreign_keys=[order_sell_id])
 
     def fill(self, **kwargs):
         self.user_id = kwargs.get('user_id')
