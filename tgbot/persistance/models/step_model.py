@@ -1,8 +1,9 @@
 from sqlalchemy import sql, Column, String, UniqueConstraint, orm
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import backref
 
 from tgbot.persistance import db
-from tgbot.persistance.models import TimedBaseModel
+from tgbot.persistance.models import TimedBaseModel, OrderModel
 
 
 class StepModel(TimedBaseModel):
@@ -17,8 +18,8 @@ class StepModel(TimedBaseModel):
     strategy_type_sell = Column(String(8), nullable=False)
     order_buy_id = Column(UUID, db.ForeignKey("stock_order.id"), nullable=False, index=True)
     order_sell_id = Column(UUID, db.ForeignKey("stock_order.id"), nullable=False, index=True)
-    order_buy = orm.relationship('OrderModel', foreign_keys=[order_buy_id])
-    order_sell = orm.relationship('OrderModel', foreign_keys=[order_sell_id])
+    order_buy: OrderModel = None
+    order_sell: OrderModel = None
 
     def fill(self, **kwargs):
         self.user_id = kwargs.get('user_id')

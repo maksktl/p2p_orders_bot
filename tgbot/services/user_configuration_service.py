@@ -60,5 +60,6 @@ class UserConfigurationService:
         return await self.__user_configuration_repository.update(configuration, **dto.__dict__)
 
     async def get_all_active(self) -> List[UserConfigurationFullDto]:
-        configurations = self.__user_configuration_repository.get_all_by_deleted_false()
-        return [UserConfigurationFullDto(configuration) for configuration in configurations]
+        configurations = await self.__user_configuration_repository.get_all_by_deleted_false()
+        return [UserConfigurationFullDto(configuration) for configuration in
+                configurations]

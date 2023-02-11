@@ -4,7 +4,7 @@ from uuid import UUID
 
 from sqlalchemy import or_, and_
 
-from tgbot.persistance.models import StepModel
+from tgbot.persistance.models import StepModel, OrderModel
 
 
 class StepRepository:
@@ -22,10 +22,14 @@ class StepRepository:
 
     @staticmethod
     async def get_steps_by_user(user_id: UUID) -> List[StepModel]:
-        return await StepModel.query.where(
-            StepModel.user_id == user_id,
-            StepModel.deleted == False
+        steps = await StepModel.query.where(
+            and_(StepModel.user_id == user_id,
+                 StepModel.deleted == False)
         ).gino.all()
+        for step in steps:
+            step.order_buy = await OrderModel.get(step.order_buy_id)
+            step.order_sell = await OrderModel.get(step.order_sell_id)
+        return steps
 
     @staticmethod
     async def get_step_by_user_id_and_order_buy_id_and_order_sell_id(user_id, order_buy_id, order_sell_id) -> Union[
@@ -36,14 +40,11 @@ class StepRepository:
         ).gino.first()
 
     @staticmethod
-    async def delete(step: StepModel) -> StepModel:
+    async def delete_by_user_id(user_id: UUID) -> StepModel:
         query = StepModel.update.values(
             deleted=True
         ).where(
-            or_(
-                StepModel.user_id == step.user_id,
-                StepModel.id == step.id
-            )
+            StepModel.user_id == user_id
         )
         return await query.gino.status()
 

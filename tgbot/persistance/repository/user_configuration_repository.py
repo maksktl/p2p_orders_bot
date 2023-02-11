@@ -42,12 +42,18 @@ class UserConfigurationRepository:
         result = await UserConfigurationModel.query \
             .where(UserConfigurationModel.user_id == user.id) \
             .gino.first()
+        result.user = await UserModel.get(result.user_id)
         return result
 
     @staticmethod
     async def get_by_id(id) -> Optional[UserConfigurationModel]:
-        return await UserConfigurationModel.get(id)
+        configuration = await UserConfigurationModel.get(id)
+        configuration.user = await UserModel.get(configuration.user_id)
+        return configuration
 
     @staticmethod
     async def get_all_by_deleted_false() -> List[UserConfigurationModel]:
-        return UserConfigurationModel.query.where(UserConfigurationModel.deleted == False).gino.all()
+        configurations = await UserConfigurationModel.query.where(UserConfigurationModel.deleted == False).gino.all()
+        for configuration in configurations:
+            configuration.user = await UserModel.get(configuration.user_id)
+        return configurations

@@ -28,7 +28,6 @@ class StepService:
     async def get_steps_by_user_id_then_delete(self, user_id: UUID, ) -> List[StepFullDto]:
         steps = await self.__step_repository.get_steps_by_user(user_id)
         tasks = []
-        for step in steps:
-            tasks.append(asyncio.create_task(self.__step_repository.delete(step)))
+        await self.__step_repository.delete_by_user_id(user_id)
         await asyncio.gather(*tasks)
         return [StepFullDto(step) for step in steps]

@@ -2,7 +2,7 @@ from sqlalchemy import sql, Column, String, Float, ARRAY, orm
 from sqlalchemy.dialects.postgresql import UUID
 
 from tgbot.persistance import db
-from tgbot.persistance.models import TimedBaseModel
+from tgbot.persistance.models import TimedBaseModel, UserModel
 from tgbot.services.dto.user_configuration_dto import UserConfigurationDto
 
 
@@ -22,7 +22,7 @@ class UserConfigurationModel(TimedBaseModel):
     trade_type_buy = Column(String(8), nullable=False)
     payment_sell = Column(ARRAY(String), nullable=False, default=[])
     payment_buy = Column(ARRAY(String), nullable=False, default=[])
-    user = orm.relationship('UserModel', foreign_keys=[user_id])
+    user: UserModel = None
 
     def fill(self, dto: UserConfigurationDto):
         self.user_id = dto.user_internal_id

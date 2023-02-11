@@ -14,6 +14,7 @@ from tgbot.middlewares.acl_middleware import ACLMiddleware
 from tgbot.middlewares.environment_middleware import EnvironmentMiddleware
 from tgbot.persistance import setup, shutdown
 from tgbot.services.notificator import Notificator
+from tgbot.utils.scheduler_manager import SchedulerManager
 
 logger = logging.getLogger(__name__)
 handlers = []
@@ -45,6 +46,7 @@ async def main():
     storage = RedisStorage2() if config.tg_bot.use_redis else MemoryStorage()
     bot = Bot(token=config.tg_bot.token, parse_mode='HTML')
     dp = Dispatcher(bot, storage=storage)
+    SchedulerManager().start()
     Notificator.get_instance(bot)
 
     bot['config'] = config
@@ -58,6 +60,7 @@ async def main():
     try:
         await dp.start_polling()
     finally:
+        await SchedulerManager().shutdown()
         await dp.storage.close()
         await dp.storage.wait_closed()
         await bot.session.close()
