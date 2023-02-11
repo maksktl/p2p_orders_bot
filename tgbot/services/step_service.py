@@ -1,6 +1,7 @@
 import asyncio
 import logging
 from typing import List
+from uuid import UUID
 
 from tgbot.persistance.repository.step_repository import StepRepository
 from tgbot.services.dto.step_full_dto import StepFullDto
@@ -20,11 +21,11 @@ class StepService:
     def __init__(self):
         self.__step_repository: StepRepository = StepRepository.get_instance()
 
-    async def get_steps_by_user_id(self, user_id: int) -> List[StepFullDto]:
+    async def get_steps_by_user_id(self, user_id: UUID) -> List[StepFullDto]:
         steps = await self.__step_repository.get_steps_by_user(user_id)
         return [StepFullDto(step) for step in steps]
 
-    async def get_steps_by_user_id_then_delete(self, user_id: int) -> List[StepFullDto]:
+    async def get_steps_by_user_id_then_delete(self, user_id: UUID, ) -> List[StepFullDto]:
         steps = await self.__step_repository.get_steps_by_user(user_id)
         tasks = []
         for step in steps:

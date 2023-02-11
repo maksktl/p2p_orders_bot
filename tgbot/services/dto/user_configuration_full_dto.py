@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from typing import List
 from uuid import UUID
 
+from tgbot.services.dto import UserFullDto
+
 
 @dataclass
 class UserConfigurationFullDto:
@@ -16,9 +18,12 @@ class UserConfigurationFullDto:
     trade_type_buy: str
     payment_sell: List[str]
     payment_buy: List[str]
+    user_id: UUID
+    user: UserFullDto
     id: UUID = None
 
     def __init__(self, model):
+        self.user_id = model.user_id
         self.asset = model.asset
         self.fiat = model.fiat
         self.deposit = model.deposit
@@ -31,3 +36,4 @@ class UserConfigurationFullDto:
         self.payment_sell = model.payment_sell
         self.payment_buy = model.payment_buy
         self.id = model.id
+        self.user = UserFullDto(model.user)

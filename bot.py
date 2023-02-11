@@ -13,6 +13,7 @@ from tgbot.handlers.user import UserHandler
 from tgbot.middlewares.acl_middleware import ACLMiddleware
 from tgbot.middlewares.environment_middleware import EnvironmentMiddleware
 from tgbot.persistance import setup, shutdown
+from tgbot.services.notificator import Notificator
 
 logger = logging.getLogger(__name__)
 handlers = []
@@ -44,6 +45,7 @@ async def main():
     storage = RedisStorage2() if config.tg_bot.use_redis else MemoryStorage()
     bot = Bot(token=config.tg_bot.token, parse_mode='HTML')
     dp = Dispatcher(bot, storage=storage)
+    Notificator.get_instance(bot)
 
     bot['config'] = config
 

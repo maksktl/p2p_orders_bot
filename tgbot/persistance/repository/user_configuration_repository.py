@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from tgbot.persistance import db
 from tgbot.persistance.models import UserConfigurationModel, UserModel
@@ -47,3 +47,7 @@ class UserConfigurationRepository:
     @staticmethod
     async def get_by_id(id) -> Optional[UserConfigurationModel]:
         return await UserConfigurationModel.get(id)
+
+    @staticmethod
+    async def get_all_by_deleted_false() -> List[UserConfigurationModel]:
+        return UserConfigurationModel.query.where(UserConfigurationModel.deleted == False).gino.all()

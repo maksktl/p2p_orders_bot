@@ -1,4 +1,6 @@
+from dataclasses import dataclass
 from typing import List
+from uuid import UUID
 
 from tgbot.persistance.models.order_model import OrderModel
 

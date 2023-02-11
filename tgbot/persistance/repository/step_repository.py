@@ -1,5 +1,6 @@
 import asyncio
 from typing import List, Union
+from uuid import UUID
 
 from sqlalchemy import or_, and_
 
@@ -20,7 +21,7 @@ class StepRepository:
         return await step.create()
 
     @staticmethod
-    async def get_steps_by_user(user_id) -> List[StepModel]:
+    async def get_steps_by_user(user_id: UUID) -> List[StepModel]:
         return await StepModel.query.where(
             StepModel.user_id == user_id,
             StepModel.deleted == False

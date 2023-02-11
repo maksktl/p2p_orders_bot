@@ -1,4 +1,4 @@
-from sqlalchemy import sql, Column, String, Float, ARRAY
+from sqlalchemy import sql, Column, String, Float, ARRAY, orm
 from sqlalchemy.dialects.postgresql import UUID
 
 from tgbot.persistance import db
@@ -22,6 +22,7 @@ class UserConfigurationModel(TimedBaseModel):
     trade_type_buy = Column(String(8), nullable=False)
     payment_sell = Column(ARRAY(String), nullable=False, default=[])
     payment_buy = Column(ARRAY(String), nullable=False, default=[])
+    user = orm.relationship('UserModel', foreign_keys=[user_id])
 
     def fill(self, dto: UserConfigurationDto):
         self.user_id = dto.user_internal_id
