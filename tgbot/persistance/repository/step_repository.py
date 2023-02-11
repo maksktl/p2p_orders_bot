@@ -1,6 +1,6 @@
-from typing import List
+from typing import List, Union
 
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 
 from tgbot.persistance.models import StepModel
 
@@ -19,25 +19,19 @@ class StepRepository:
         return await step.create()
 
     @staticmethod
-    async def update(step: StepModel) -> StepModel:
-        query = StepModel.update.values(
-            next_step_id=step.next_step_id,
-            deleted=step.deleted,
-            order_id=step.order_id
-        ).where(
-            or_(
-                StepModel.user_id == step.user_id,
-                StepModel.id == step.id
-            )
-        )
-        return await query.gino.status()
-
-    @staticmethod
     async def get_steps_by_user(user_id) -> List[StepModel]:
         return await StepModel.query.where(
             StepModel.user_id == user_id,
             StepModel.deleted == False
         ).gino.all()
+
+    @staticmethod
+    async def get_step_by_user_id_and_order_buy_id_and_order_sell_id(user_id, order_buy_id, order_sell_id) -> Union[
+        StepModel, None]:
+        return await StepModel.query.where(
+            and_(StepModel.user_id == user_id,
+                 StepModel.order_buy_id == order_buy_id, StepModel.order_sell_id == order_sell_id)
+        ).gino.first()
 
     @staticmethod
     async def delete(step: StepModel) -> StepModel:
@@ -50,3 +44,8 @@ class StepRepository:
             )
         )
         return await query.gino.status()
+
+    @staticmethod
+    async def save_all(steps: List[StepModel]):
+        tasks = [asyncio.create_task(step.create()) for step in steps]
+        await asyncio.gather(*tasks)
