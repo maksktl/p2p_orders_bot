@@ -31,6 +31,7 @@ class UserConfigurationModel(TimedBaseModel):
         self.spread_to = dto.spread_to
         self.spread_from = dto.spread_from
         self.exchange_buy = dto.exchange_buy
+        self.exchange_sell = dto.exchange_sell
         self.trade_type_sell = dto.trade_type_sell
         self.trade_type_buy = dto.trade_type_buy
         self.payment_sell = dto.payment_sell

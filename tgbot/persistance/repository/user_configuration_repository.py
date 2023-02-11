@@ -26,6 +26,7 @@ class UserConfigurationRepository:
                                                spread_to=kwargs.get('spread_to', user_configuration.spread_to),
                                                spread_from=kwargs.get('spread_from', user_configuration.spread_from),
                                                exchange_buy=kwargs.get('exchange_buy', user_configuration.exchange_buy),
+                                               exchange_sell=kwargs.get('exchange_sell', user_configuration.exchange_sell),
                                                trade_type_sell=kwargs.get('trade_type_sell',
                                                                           user_configuration.trade_type_sell),
                                                trade_type_buy=kwargs.get('trade_type_buy',
