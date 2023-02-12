@@ -1,4 +1,5 @@
 from typing import Optional, List
+from uuid import UUID
 
 from tgbot.persistance import db
 from tgbot.persistance.models import UserConfigurationModel, UserModel
@@ -42,11 +43,21 @@ class UserConfigurationRepository:
         result = await UserConfigurationModel.query \
             .where(UserConfigurationModel.user_id == user.id) \
             .gino.first()
-        result.user = await UserModel.get(result.user_id)
+        if result:
+            result.user = user
         return result
 
     @staticmethod
-    async def get_by_id(id) -> Optional[UserConfigurationModel]:
+    async def get_by_user_id(user_id: UUID) -> UserConfigurationModel:
+        result = await UserConfigurationModel.query \
+            .where(UserConfigurationModel.user_id == user_id) \
+            .gino.first()
+        if result:
+            result.user = await UserModel.get(result.user_id)
+        return result
+
+    @staticmethod
+    async def get_by_id(id: UUID) -> Optional[UserConfigurationModel]:
         configuration = await UserConfigurationModel.get(id)
         configuration.user = await UserModel.get(configuration.user_id)
         return configuration

@@ -8,7 +8,7 @@ from tgbot.handlers.base import BaseHandler
 from tgbot.services.user_configuration_service import UserConfigurationService
 
 
-class TestHandler(BaseHandler):
+class P2PHandler(BaseHandler):
     USER_CONFIGURATION_SERVICE = UserConfigurationService.get_instance()
 
     def __init__(self, dp: Dispatcher):
@@ -38,12 +38,12 @@ class TestHandler(BaseHandler):
     @staticmethod
     async def apply_configuration(message: types.Message, *args, **kwargs):
         web_app_data = json.loads(message.web_app_data.data)
-        await TestHandler.USER_CONFIGURATION_SERVICE.create_or_update(web_app_data, message.from_user.id)
+        await P2PHandler.USER_CONFIGURATION_SERVICE.create_or_update(web_app_data, message.from_user.id)
 
         await message.answer('☑️ Успешно применили новую конфигурацию для поиска связок')
 
     def register_methods(self):
-        self.dp.register_message_handler(TestHandler.bot_echo)
-        self.dp.register_message_handler(TestHandler.apply_configuration, state="*",
+        self.dp.register_message_handler(P2PHandler.bot_echo)
+        self.dp.register_message_handler(P2PHandler.apply_configuration, state="*",
                                          content_types=types.ContentTypes.WEB_APP_DATA)
-        self.dp.register_message_handler(TestHandler.bot_echo_all, state="*", content_types=types.ContentTypes.ANY)
+        self.dp.register_message_handler(P2PHandler.bot_echo_all, state="*", content_types=types.ContentTypes.ANY)

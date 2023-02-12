@@ -7,9 +7,9 @@ from aiogram.contrib.fsm_storage.redis import RedisStorage2
 
 from tgbot.config import load_config
 from tgbot.filters.admin import AdminFilter
-from tgbot.handlers.admin import AdminHandler
-from tgbot.handlers.test import TestHandler
-from tgbot.handlers.user import UserHandler
+from tgbot.handlers.admin_hander import AdminHandler
+from tgbot.handlers.p2p_handler import P2PHandler
+from tgbot.handlers.user_handler import UserHandler
 from tgbot.middlewares.acl_middleware import ACLMiddleware
 from tgbot.middlewares.environment_middleware import EnvironmentMiddleware
 from tgbot.persistance import setup, shutdown
@@ -32,7 +32,7 @@ def register_all_filters(dp):
 def register_all_handlers(dp):
     handlers.append(AdminHandler(dp))
     handlers.append(UserHandler(dp))
-    handlers.append(TestHandler(dp))
+    handlers.append(P2PHandler(dp))
 
 
 async def main():

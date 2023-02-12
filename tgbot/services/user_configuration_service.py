@@ -1,5 +1,6 @@
 import logging
 from typing import List
+from uuid import UUID
 
 from tgbot.persistance.models import UserConfigurationModel
 from tgbot.persistance.repository import UserRepository
@@ -28,6 +29,12 @@ class UserConfigurationService:
         if not user_model:
             raise Exception("User configuration not found")
         return UserConfigurationFullDto(user_model)
+
+    async def get_user_conf_by_user_id(self, id: UUID) -> UserConfigurationFullDto:
+        user_config = await self.__user_configuration_repository.get_by_user_id(id)
+        if not user_config:
+            raise Exception("User configuration not found")
+        return UserConfigurationFullDto(user_config)
 
     async def create_user_conf(self, dto: UserConfigurationDto, user_id: int) -> UserConfigurationFullDto:
         user = await self.__user_repository.get_by_tg_id_and_deleted_false(user_id)

@@ -20,6 +20,7 @@ class UserConfigurationFullDto:
     payment_buy: List[str]
     user_id: UUID
     user: UserFullDto
+    deleted: bool
     id: UUID = None
 
     def __init__(self, model):
@@ -37,3 +38,4 @@ class UserConfigurationFullDto:
         self.payment_buy = model.payment_buy
         self.id = model.id
         self.user = UserFullDto(model.user)
+        self.deleted = model.deleted

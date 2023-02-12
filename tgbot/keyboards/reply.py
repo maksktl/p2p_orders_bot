@@ -30,11 +30,16 @@ class ReplyKeyboard:
         return keyboard
 
     @staticmethod
-    def get_web_app_conf_keyboard(url):
-        return ReplyKeyboard.get_keyboard([[{
+    def get_web_app_conf_keyboard(url, config_active=False):
+        buttons_row_1 = [{
             'text': '⚙️ Настроить поиск связок',
             'web_app': aiogram.types.WebAppInfo(url=url)
-        }]], resize_keyboard=True)
+        }]
+        if config_active is not None:
+            buttons_row_1.append({
+                'text': f'{"❌ Отключить" if config_active else "✅ Включить"} поиск связок'
+            })
+        return ReplyKeyboard.get_keyboard([[*buttons_row_1]], resize_keyboard=True)
 
 
 """
