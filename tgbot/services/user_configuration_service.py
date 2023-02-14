@@ -70,3 +70,9 @@ class UserConfigurationService:
         configurations = await self.__user_configuration_repository.get_all_by_deleted_false()
         return [UserConfigurationFullDto(configuration) for configuration in
                 configurations]
+
+    async def disable_configuration(self, user_id: UUID):
+        return await self.__user_configuration_repository.delete_by_user_id(user_id) is not None
+
+    async def enable_configuration(self, user_id: UUID):
+        return await self.__user_configuration_repository.restore_by_user_id(user_id) is not None

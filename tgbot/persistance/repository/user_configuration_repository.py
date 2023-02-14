@@ -27,7 +27,8 @@ class UserConfigurationRepository:
                                                spread_to=kwargs.get('spread_to', user_configuration.spread_to),
                                                spread_from=kwargs.get('spread_from', user_configuration.spread_from),
                                                exchange_buy=kwargs.get('exchange_buy', user_configuration.exchange_buy),
-                                               exchange_sell=kwargs.get('exchange_sell', user_configuration.exchange_sell),
+                                               exchange_sell=kwargs.get('exchange_sell',
+                                                                        user_configuration.exchange_sell),
                                                trade_type_sell=kwargs.get('trade_type_sell',
                                                                           user_configuration.trade_type_sell),
                                                trade_type_buy=kwargs.get('trade_type_buy',
@@ -68,3 +69,13 @@ class UserConfigurationRepository:
         for configuration in configurations:
             configuration.user = await UserModel.get(configuration.user_id)
         return configurations
+
+    @staticmethod
+    async def delete_by_user_id(user_id: UUID):
+        return await UserConfigurationModel.update.values(deleted=True).where(
+            UserModel.id == user_id).gino.status() is not None
+
+    @staticmethod
+    async def restore_by_user_id(user_id: UUID):
+        return await UserConfigurationModel.update.values(deleted=False).where(
+            UserModel.id == user_id).gino.status() is not None
