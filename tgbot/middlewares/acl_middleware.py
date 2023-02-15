@@ -42,9 +42,6 @@ class ACLMiddleware(BaseMiddleware):
 
         data['user'] = user
 
-    async def on_post_process_message(self, message):
-        message.text = 'Nooeno'
-
     async def is_config_active(self, user_id: UUID) -> Optional[bool]:
         try:
             user_config = await self.__user_configuration_service.get_user_conf_by_user_id(user_id)
