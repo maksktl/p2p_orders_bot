@@ -25,36 +25,33 @@ class P2PHandler(BaseHandler):
                                                                                   config_active))
 
     @staticmethod
-    async def disable_configuration(message: types.Message, config, user, config_active, *args, **kwargs):
-        if not config_active:
-            await message.answer('Поиск связок уже был отключен',
+    async def handle_configuration(message: types.Message, config, user, config_active, enabled: bool,
+                                   success_text: str):
+        if enabled == config_active:
+            await message.answer(f'Поиск связок уже {"был активирован" if enabled else "был отключен"}',
                                  reply_markup=ReplyKeyboard.get_web_app_conf_keyboard(config.tg_bot.webapp_url,
                                                                                       config_active))
             return
-        is_disabled = await P2PHandler.USER_CONFIGURATION_SERVICE.disable_configuration(user.id)
-        if is_disabled:
-            await message.answer('Поиск связок успешно отключен',
-                                 reply_markup=ReplyKeyboard.get_web_app_conf_keyboard(config.tg_bot.webapp_url, False))
+        is_enabled = await P2PHandler.USER_CONFIGURATION_SERVICE.enable_configuration(
+            user.id) if enabled else await P2PHandler.USER_CONFIGURATION_SERVICE.disable_configuration(user.id)
+        if is_enabled:
+            await message.answer(success_text,
+                                 reply_markup=ReplyKeyboard.get_web_app_conf_keyboard(config.tg_bot.webapp_url,
+                                                                                      enabled))
             return
         await message.answer('Произошла ошибка, разработчики уже над ней работают :)',
                              reply_markup=ReplyKeyboard.get_web_app_conf_keyboard(config.tg_bot.webapp_url,
                                                                                   config_active))
 
     @staticmethod
+    async def disable_configuration(message: types.Message, config, user, config_active, *args, **kwargs):
+        await P2PHandler.handle_configuration(message, config, user, config_active, False,
+                                              'Поиск связок успешно отключен')
+
+    @staticmethod
     async def enable_configuration(message: types.Message, config, user, config_active, *args, **kwargs):
-        if config_active:
-            await message.answer('Поиск связок уже был активироан',
-                                 reply_markup=ReplyKeyboard.get_web_app_conf_keyboard(config.tg_bot.webapp_url,
-                                                                                      config_active))
-            return
-        is_active = await P2PHandler.USER_CONFIGURATION_SERVICE.enable_configuration(user.id)
-        if is_active:
-            await message.answer('Поиск связок успешно активирован',
-                                 reply_markup=ReplyKeyboard.get_web_app_conf_keyboard(config.tg_bot.webapp_url, True))
-            return
-        await message.answer('Произошла ошибка, разработчики уже над ней работают :)',
-                             reply_markup=ReplyKeyboard.get_web_app_conf_keyboard(config.tg_bot.webapp_url,
-                                                                                  config_active))
+        await P2PHandler.handle_configuration(message, config, user, config_active, True,
+                                              'Поиск связок успешно активирован')
 
     def register_methods(self):
         self.dp.register_message_handler(P2PHandler.apply_configuration, state="*",
