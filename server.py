@@ -1,12 +1,11 @@
 import asyncio
 import logging
-from typing import List
 
 from aiohttp import web
-from sqlalchemy import and_
+from sqlalchemy.sql import text
 
 from tgbot.config import load_config
-from tgbot.persistance import setup, shutdown
+from tgbot.persistance import setup, shutdown, db
 from tgbot.persistance.models import OrderModel
 
 logger = logging.getLogger(__name__)
@@ -16,19 +15,24 @@ class WebApp:
     def __init__(self, port):
         self.port = port
         self.app = web.Application()
-        self.app.add_routes([web.get('/get_banks', self.get_banks)])
+        self.app.add_routes([web.get('/banks', self.get_banks)])
 
     async def get_banks(self, request):
-        exchange = request.query.get('exchange', '')
+        sources = ''
+        exchanges = request.query.get('exchanges', '').split(',')
         fiat = request.query.get('fiat', '')
+        if exchanges:
+            sources = 'AND (source = ANY(\'{"' + '", "'.join(exchanges) + '"}\'))'
 
-        orders: List[OrderModel] = await OrderModel.query.where(
-            and_(OrderModel.asset == exchange, OrderModel.fiat == fiat, OrderModel.deleted == False)).gino.all()
-
-        response_data = []
-        for order in orders:
-            response_data.extend(order.pay_type)
-        return web.json_response(response_data)
+        query = text(
+            "SELECT DISTINCT unnest(pay_type) AS pay_type " +
+            "FROM stock_order " +
+            "WHERE fiat = :fiat " +
+            sources
+        ).bindparams(fiat=fiat)
+        result = await db.all(query)
+        result = list(map(lambda x: x[0], result))
+        return web.json_response(result)
 
     async def start_server(self):
         logger.info(f'Started server at port {self.port}')
