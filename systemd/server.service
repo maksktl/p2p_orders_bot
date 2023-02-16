@@ -1,0 +1,13 @@
+[Unit]
+Description=White Crypto server
+After=network.target
+
+[Service]
+User=root
+Group=root
+Type=simple
+WorkingDirectory=/opt/p2p_telegram_bot
+ExecStart=/bin/bash -c 'source venv/bin/activate && pip install -r requirements.txt && python server.py'
+
+[Install]
+WantedBy=multi-user.target
