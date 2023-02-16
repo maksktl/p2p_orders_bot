@@ -1,14 +1,13 @@
 [Unit]
-Description=Course Bot
+Description=White Crypto bot
 After=network.target
 
 [Service]
-User=tgbot
-Group=tgbot
+User=root
+Group=root
 Type=simple
-WorkingDirectory=/opt/tgbot
+WorkingDirectory=/opt/p2p_telegram_bot
 ExecStart=/bin/bash -c 'source venv/bin/activate && pip install -r requirements.txt && python bot.py'
-Restart=always
 
 [Install]
 WantedBy=multi-user.target
