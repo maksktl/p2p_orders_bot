@@ -30,6 +30,7 @@ class Config:
     tg_bot: TgBot
     db: DbConfig
     misc: Miscellaneous
+    webapp_port: int
 
 
 def load_config(path: str = None):
@@ -50,4 +51,5 @@ def load_config(path: str = None):
             database=env.str('DB_NAME')
         ),
         misc=Miscellaneous(),
+        webapp_port=env.int("WEBAPP_PORT")
     )

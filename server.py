@@ -5,8 +5,9 @@ from typing import List
 from aiohttp import web
 from sqlalchemy import and_
 
-from config import load_config
-from database import setup, shutdown, OrderModel
+from tgbot.config import load_config
+from tgbot.persistance import setup, shutdown
+from tgbot.persistance.models import OrderModel
 
 logger = logging.getLogger(__name__)
 
