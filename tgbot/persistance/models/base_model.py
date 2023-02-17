@@ -10,7 +10,7 @@ from tgbot.persistance import db
 class BaseModel(db.Model):
     __abstract__ = True
     id = Column(UUID, primary_key=True, default=db.func.uuid_generate_v4())
-    deleted = Column(db.Boolean, default=False)
+    deleted = Column(db.Boolean, default=False, index=True)
 
     def __str__(self):
         model = self.__class__.__name__

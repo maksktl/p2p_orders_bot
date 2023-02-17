@@ -13,4 +13,5 @@ class TimedBaseModel(BaseModel):
         default=datetime.datetime.utcnow,
         onupdate=datetime.datetime.utcnow,
         server_default=db.func.now(),
+        index=True
     )
