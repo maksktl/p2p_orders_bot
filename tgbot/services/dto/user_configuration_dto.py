@@ -6,7 +6,7 @@ from uuid import UUID
 @dataclass
 class UserConfigurationDto:
     asset: List[str]
-    fiat: List[str]
+    fiat: str
     deposit: float
     spread_from: float
     spread_to: float
@@ -34,7 +34,7 @@ class UserConfigurationDto:
 
     def __init__(self, payload: dict):
         self.asset = payload.get('cryptoSend', [])
-        self.fiat = payload.get('fiatSend', [])
+        self.fiat = payload.get('fiatSend', '')
         self.deposit = float(payload.get('deposit', 0.0))
         self.spread_from = float(payload.get('spreadFrom', 0.0))
         self.spread_to = float(payload.get('spreadTo', 0.0))

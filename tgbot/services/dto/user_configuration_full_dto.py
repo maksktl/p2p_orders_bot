@@ -8,7 +8,7 @@ from tgbot.services.dto import UserFullDto
 @dataclass
 class UserConfigurationFullDto:
     asset: List[str]
-    fiat: List[str]
+    fiat: str
     deposit: float
     spread_from: float
     spread_to: float

@@ -12,7 +12,7 @@ class UserConfigurationModel(TimedBaseModel):
 
     user_id = Column(UUID, db.ForeignKey("user.id"), nullable=False)
     asset = Column(ARRAY(String), nullable=False)
-    fiat = Column(ARRAY(String), nullable=False)
+    fiat = Column(String(8), nullable=False)
     deposit = Column(Float(precision=6), nullable=False)
     spread_from = Column(Float(precision=6), nullable=False)
     spread_to = Column(Float(precision=6), nullable=False)
