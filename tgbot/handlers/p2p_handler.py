@@ -1,8 +1,6 @@
 import json
 
 from aiogram import types, Dispatcher
-from aiogram.dispatcher import FSMContext
-from aiogram.utils.markdown import hcode
 
 from tgbot.handlers.base import BaseHandler
 from tgbot.keyboards.reply import ReplyKeyboard
@@ -55,6 +53,8 @@ class P2PHandler(BaseHandler):
 
     def register_methods(self):
         self.dp.register_message_handler(P2PHandler.apply_configuration, state="*",
-                                         content_types=types.ContentTypes.WEB_APP_DATA)
-        self.dp.register_message_handler(P2PHandler.disable_configuration, state="*", text='❌ Отключить поиск связок')
-        self.dp.register_message_handler(P2PHandler.enable_configuration, state="*", text='✅ Включить поиск связок')
+                                         content_types=types.ContentTypes.WEB_APP_DATA, **self._general_filters)
+        self.dp.register_message_handler(P2PHandler.disable_configuration, state="*", text='❌ Отключить поиск связок',
+                                         **self._general_filters)
+        self.dp.register_message_handler(P2PHandler.enable_configuration, state="*", text='✅ Включить поиск связок',
+                                         **self._general_filters)

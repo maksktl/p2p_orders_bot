@@ -15,7 +15,15 @@ class UserHandler(BaseHandler):
         await message.answer(
             f"Приветствую, {message.chat.first_name}!\nНастрой свой поиск связки нажав на кнопку ниже.",
             reply_markup=ReplyKeyboard.get_web_app_conf_keyboard(config.tg_bot.webapp_url, config_active)
-            )
+        )
+
+    @staticmethod
+    async def user_not_accessed(message: Message):
+        await message.answer(
+            f"Приветствую, {message.chat.first_name}!\n"
+            f"Чтобы получить доступ к боту напиши <a href=\"tg://user?id=254727353\">Менеджеру</a>",
+        )
 
     def register_methods(self):
-        self.dp.register_message_handler(UserHandler.user_start, commands=["start"], state="*", is_admin=True)
+        self.dp.register_message_handler(UserHandler.user_start, commands=["start"], state="*", **self._general_filters)
+        self.dp.register_message_handler(UserHandler.user_not_accessed, bot_access=False)
