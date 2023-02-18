@@ -14,4 +14,4 @@ class IsAdminFilter(BoundFilter):
 
     async def check(self, message: types.Message):
         user = await UserService.get_instance().get_user_by_tg_id(message.from_user.id)
-        return user.admin
+        return user.admin == self.is_admin
