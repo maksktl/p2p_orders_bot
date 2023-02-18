@@ -18,4 +18,4 @@ class UserHandler(BaseHandler):
             )
 
     def register_methods(self):
-        self.dp.register_message_handler(UserHandler.user_start, commands=["start"], state="*")
+        self.dp.register_message_handler(UserHandler.user_start, commands=["start"], state="*", is_admin=True)

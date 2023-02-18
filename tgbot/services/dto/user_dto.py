@@ -12,6 +12,8 @@ class UserDto:
     telegram_id: int = None
     telegram_url: str = None
     phone_number: str = None
+    bot_access: bool = None
+    admin: bool = None
 
     def fill_from_user(self, user):
         self.name = user.first_name

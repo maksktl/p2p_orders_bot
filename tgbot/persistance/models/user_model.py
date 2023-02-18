@@ -1,6 +1,7 @@
+from email.policy import default
 from enum import unique
 
-from sqlalchemy import sql, Column, String, BIGINT
+from sqlalchemy import sql, Column, String, BIGINT, BOOLEAN
 
 from tgbot.persistance.models import TimedBaseModel
 from tgbot.services.dto import UserDto
@@ -10,13 +11,15 @@ class UserModel(TimedBaseModel):
     __tablename__ = 'user'
     query: sql.Select
 
-    name = Column(String(64), nullable=False, index=True)
+    name = Column(String(64), nullable=False, index=True, default='Not Authorized')
     surname = Column(String(64))
     middle_name = Column(String(64))
     email = Column(String(256))
     telegram_id = Column(BIGINT, unique=True, index=True)
     telegram_url = Column(String)
     phone_number = Column(String(16))
+    bot_access = Column(BOOLEAN, index=True, default=False)
+    admin = Column(BOOLEAN, index=True, default=False)
 
     def fill(self, user_dto: UserDto):
         self.name = user_dto.name

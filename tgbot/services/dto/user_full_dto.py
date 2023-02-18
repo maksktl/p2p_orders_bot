@@ -12,6 +12,8 @@ class UserFullDto:
     telegram_id: int
     telegram_url: str
     phone_number: str
+    bot_access: bool
+    admin: bool
 
     def __init__(self, model):
         self.id = model.id
@@ -22,3 +24,5 @@ class UserFullDto:
         self.telegram_id = model.telegram_id
         self.telegram_url = model.telegram_url
         self.phone_number = model.phone_number
+        self.bot_access = model.bot_access
+        self.admin = model.admin
