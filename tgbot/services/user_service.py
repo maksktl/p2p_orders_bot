@@ -45,7 +45,7 @@ class UserService:
             user_model = await self.__user_repository.get_by_tg_id_and_deleted_false(user_dto.telegram_id)
         if not user_model:
             raise Exception("User not found")
-        return UserFullDto(await self.__user_repository.update(user_model.update(user_dto)))
+        return UserFullDto(await self.__user_repository.update(user_model.update_by_dto(user_dto)))
 
     async def set_user_settings(self, tg_id, admin: bool = None, bot_access: bool = None):
         user_model = await self.__user_repository.get_by_tg_id_and_deleted_false(tg_id)

@@ -30,7 +30,7 @@ class UserModel(TimedBaseModel):
         self.telegram_url = user_dto.telegram_url
         self.phone_number = user_dto.phone_number
 
-    def update(self, user_dto: UserDto):
+    def update_by_dto(self, user_dto: UserDto):
         self.name = user_dto.name or self.name
         self.surname = user_dto.surname or self.surname
         self.middle_name = user_dto.middle_name or self.middle_name

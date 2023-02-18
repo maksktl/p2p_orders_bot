@@ -20,7 +20,17 @@ class UserRepository:
 
     @staticmethod
     async def update(user: UserModel):
-        return user.apply()
+        return await user.update(
+            name=user.name,
+            surname=user.surname,
+            middle_name=user.middle_name,
+            email=user.email,
+            telegram_id=user.telegram_id,
+            telegram_url=user.telegram_url,
+            phone_number=user.phone_number,
+            bot_access=user.bot_access,
+            admin=user.admin
+        ).apply()
 
     @staticmethod
     async def get_by_id(id) -> Optional[UserModel]:
