@@ -15,6 +15,14 @@ class AdminHandler(BaseHandler):
         await message.reply("Добрый день, уважаемый администратор.")
 
     @staticmethod
+    async def help(message: Message):
+        await message.answer("Помощь:\n\n"
+                             "/grant_access user_id - Дать пользователю права на доступ к боту\n"
+                             "/revoke_access user_id - Отобрать у пользователя права на доступ к боту\n\n"
+                             "/promote user_id - Выдать пользовтелю права администратора\n"
+                             "/revoke_promote user_id - Отобрать у пользователя права администратора")
+
+    @staticmethod
     async def grant_access(message: Message):
         command, user_tg_id = message.text.split()
         user_tg_id = int(user_tg_id)
@@ -34,6 +42,8 @@ class AdminHandler(BaseHandler):
 
     def register_methods(self):
         self.dp.register_message_handler(AdminHandler.admin_start, commands=['start'], state='*',
+                                         **self._general_filters)
+        self.dp.register_message_handler(AdminHandler.help, commands=['help'], state='*',
                                          **self._general_filters)
         self.dp.register_message_handler(AdminHandler.grant_access, commands=['grant_access'], state='*',
                                          **self._general_filters)
