@@ -11,6 +11,7 @@ class P2PHandler(BaseHandler):
     USER_CONFIGURATION_SERVICE = UserConfigurationService.get_instance()
 
     def __init__(self, dp: Dispatcher):
+        self._general_filters = {"bot_access": True}
         super().__init__(dp)
 
     @staticmethod
@@ -20,7 +21,7 @@ class P2PHandler(BaseHandler):
 
         await message.answer('☑️ Успешно применили новую конфигурацию для поиска связок',
                              reply_markup=ReplyKeyboard.get_web_app_conf_keyboard(config.tg_bot.webapp_url,
-                                                                                  config_active))
+                                                                                  True))
 
     @staticmethod
     async def handle_configuration(message: types.Message, config, user, config_active, enabled: bool,

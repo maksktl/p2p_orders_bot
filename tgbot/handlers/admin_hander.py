@@ -6,6 +6,7 @@ from tgbot.handlers.base import BaseHandler
 
 class AdminHandler(BaseHandler):
     def __init__(self, dp: Dispatcher):
+        self._general_filters = {"bot_access": True, 'is_admin': True}
         super().__init__(dp)
         self._general_filters['is_admin'] = True
 

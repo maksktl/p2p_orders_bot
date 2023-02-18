@@ -8,6 +8,7 @@ from tgbot.keyboards.reply import ReplyKeyboard
 
 class UserHandler(BaseHandler):
     def __init__(self, dp: Dispatcher):
+        self._general_filters = {"bot_access": True}
         super().__init__(dp)
 
     @staticmethod
