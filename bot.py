@@ -6,6 +6,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.fsm_storage.redis import RedisStorage2
 
 from tgbot.config import load_config
+from tgbot.filters.access_filter import BotAccessFilter
 from tgbot.filters.admin_filter import IsAdminFilter
 from tgbot.handlers.admin_hander import AdminHandler
 from tgbot.handlers.p2p_handler import P2PHandler
@@ -27,6 +28,7 @@ def register_all_middlewares(dp, config):
 
 def register_all_filters(dp):
     dp.filters_factory.bind(IsAdminFilter)
+    dp.filters_factory.bind(BotAccessFilter)
 
 
 def register_all_handlers(dp):
