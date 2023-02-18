@@ -6,6 +6,7 @@ from uuid import UUID
 from aiogram import Bot
 
 from tgbot.services.dto.step_full_dto import StepFullDto
+from tgbot.services.dto.user_configuration_full_dto import UserConfigurationFullDto
 from tgbot.services.order_service import OrderService
 from tgbot.services.step_service import StepService
 from tgbot.services.user_configuration_service import UserConfigurationService
@@ -35,27 +36,27 @@ class Notificator:
     async def send_steps():
         configurations = await Notificator.USER_CONFIGURATION_SERVICE.get_all_active()
         await asyncio.gather(
-            *[asyncio.create_task(Notificator._send_steps(configuration.user_id, configuration.user.telegram_id)) for
+            *[asyncio.create_task(Notificator._send_steps(configuration)) for
               configuration in configurations])
 
     @staticmethod
-    async def _send_steps(user_id: UUID, user_tg_id: int):
-        steps = await Notificator.STEP_SERVICE.get_steps_by_user_id_then_delete(user_id)
-        await Notificator._send_steps_to_user(user_tg_id, steps)
+    async def _send_steps(user_configuration: UserConfigurationFullDto):
+        steps = await Notificator.STEP_SERVICE.get_steps_by_user_id_then_delete(user_configuration.user_id)
+        await Notificator._send_steps_to_user(user_configuration, steps)
 
     @staticmethod
-    async def _send_steps_to_user(user_id: int, steps: List[StepFullDto]):
+    async def _send_steps_to_user(user_configuration: UserConfigurationFullDto, steps: List[StepFullDto]):
         if len(steps) == 0:
             return
         text = f'🔥 Уведомление | Найдено новых связок - {len(steps)} \n\n'
         messages = [text]
         for step in steps:
             text = messages[-1]
-            new_text = f'{step.order_buy.asset} [{step.order_buy.source}] {step.strategy_type_buy}' \
-                       f' {", ".join(step.order_buy.pay_type)} {step.order_buy.price}' \
+            new_text = f'{step.order_buy.asset} [{step.order_buy.source}] {step.strategy_type_buy.capitalize()}' \
+                       f' {", ".join(step.order_buy.pay_type)} <code>{step.order_buy.price}</code>' \
                        f' → ' \
-                       f'{step.order_sell.asset} [{step.order_sell.source}] {step.strategy_type_sell}' \
-                       f' {", ".join(step.order_sell.pay_type)} {step.order_sell.price} ' \
+                       f'{step.order_sell.asset} [{step.order_sell.source}] {step.strategy_type_sell.capitalize()}' \
+                       f' {", ".join(step.order_sell.pay_type)} <code>{step.order_sell.price}</code> ' \
                        f'Spread: {await OrderService.calculate_spread(step.order_sell.price, step.order_buy.price)}%\n\n'
             if len(text+new_text) > 4096:
                 messages.append(text)
@@ -64,4 +65,4 @@ class Notificator:
                 messages[-1] = text + new_text
 
         for message in messages:
-            await Notificator.BOT.send_message(user_id, message)
+            await Notificator.BOT.send_message(user_configuration.user.telegram_id, message)
