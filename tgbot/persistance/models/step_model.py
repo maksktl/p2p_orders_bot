@@ -1,6 +1,5 @@
-from sqlalchemy import sql, Column, String, UniqueConstraint, orm
+from sqlalchemy import sql, Column, String, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import backref
 
 from tgbot.persistance import db
 from tgbot.persistance.models import TimedBaseModel, OrderModel
