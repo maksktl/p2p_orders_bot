@@ -64,7 +64,7 @@ class UserConfigurationService:
             await self.__user_configuration_repository.create(user_conf)
             return
 
-        return await self.__user_configuration_repository.update(configuration, **dto.__dict__)
+        return await self.__user_configuration_repository.update(configuration, **dto.__dict__, deleted=False)
 
     async def get_all_active(self) -> List[UserConfigurationFullDto]:
         configurations = await self.__user_configuration_repository.get_all_by_deleted_false()

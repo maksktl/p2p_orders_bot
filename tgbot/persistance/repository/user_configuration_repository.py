@@ -35,7 +35,8 @@ class UserConfigurationRepository:
                                                                          user_configuration.trade_type_buy),
                                                payment_sell=kwargs.get('payment_sell', user_configuration.payment_sell),
                                                payment_buy=kwargs.get('payment_buy',
-                                                                      user_configuration.payment_buy)).apply()
+                                                                      user_configuration.payment_buy),
+                                               deleted=kwargs.get('deleted', False)).apply()
 
     @staticmethod
     async def get_by_tg_id(tg_id: int) -> UserConfigurationModel:

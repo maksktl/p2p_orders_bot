@@ -1,7 +1,6 @@
-from sqlalchemy import sql, Column, String, Float, ARRAY, orm
+from sqlalchemy import sql, Column, String, ARRAY, DECIMAL
 from sqlalchemy.dialects.postgresql import UUID
 
-from tgbot.persistance import db
 from tgbot.persistance.models import TimedBaseModel, UserModel
 from tgbot.services.dto.user_configuration_dto import UserConfigurationDto
 
@@ -10,12 +9,12 @@ class UserConfigurationModel(TimedBaseModel):
     __tablename__ = 'user_configuration'
     query: sql.Select
 
-    user_id = Column(UUID, db.ForeignKey("user.id"), nullable=False)
+    user_id = Column(UUID, nullable=False)
     asset = Column(ARRAY(String), nullable=False)
     fiat = Column(String(8), nullable=False)
-    deposit = Column(Float(precision=6), nullable=False)
-    spread_from = Column(Float(precision=6), nullable=False)
-    spread_to = Column(Float(precision=6), nullable=False)
+    deposit = Column(DECIMAL(precision=10, scale=2), nullable=False)
+    spread_from = Column(DECIMAL(precision=10, scale=2), nullable=False)
+    spread_to = Column(DECIMAL(precision=10, scale=2), nullable=False)
     exchange_sell = Column(ARRAY(String), nullable=False, default=[])
     exchange_buy = Column(ARRAY(String), nullable=False, default=[])
     trade_type_sell = Column(String(8), nullable=False)

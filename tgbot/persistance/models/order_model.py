@@ -1,6 +1,4 @@
-from email.policy import default
-
-from sqlalchemy import sql, Column, Text, String, Float, ARRAY, INTEGER, UniqueConstraint
+from sqlalchemy import sql, Column, Text, String, ARRAY, INTEGER, UniqueConstraint, DECIMAL
 
 from tgbot.persistance.models import TimedBaseModel
 
@@ -12,15 +10,15 @@ class OrderModel(TimedBaseModel):
         UniqueConstraint('external_id', 'source', name='uq_stock_order_external_id_source'),
     )
 
-    external_id = Column(Text, nullable=False)
+    external_id = Column(Text, nullable=False, index=True)
     username = Column(Text, nullable=False)
-    source = Column(String(32), nullable=False)
-    asset = Column(String(8), nullable=False)
+    source = Column(String(32), nullable=False, index=True)
+    asset = Column(String(8), nullable=False, index=True)
     fiat = Column(String(8), nullable=False)
-    price = Column(Float(precision=2), nullable=False)
+    price = Column(DECIMAL(precision=10, scale=2), nullable=False, index=True)
     trade_type = Column(String(4), nullable=False)
-    limit_lower = Column(Float(precision=2), nullable=False)
-    limit_upper = Column(Float(precision=2), nullable=False)
-    capital = Column(Float(precision=2))
+    limit_lower = Column(DECIMAL(precision=10, scale=2), nullable=False)
+    limit_upper = Column(DECIMAL(precision=10, scale=2), nullable=False)
+    capital = Column(DECIMAL(precision=10))
     pay_type = Column(ARRAY(String), nullable=False, default=[])
-    partition = Column(INTEGER, default=1)
+    partition = Column(INTEGER, default=1, index=True)

@@ -7,7 +7,7 @@ from tgbot.persistance.models import BaseModel
 class TimedBaseModel(BaseModel):
     __abstract__ = True
 
-    created_at = db.Column(db.DateTime(True), server_default=db.func.now())
+    created_at = db.Column(db.DateTime(True), server_default=db.func.now(), default=datetime.datetime.utcnow)
     updated_at = db.Column(
         db.DateTime(True),
         default=datetime.datetime.utcnow,
