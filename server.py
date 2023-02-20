@@ -25,13 +25,14 @@ class WebApp:
             sources = 'AND (source = ANY(\'{"' + '", "'.join(exchanges) + '"}\'))'
 
         query = text(
-            "SELECT DISTINCT unnest(pay_type) AS pay_type " +
+            "SELECT r.pay_type FROM (SELECT unnest(pay_type) AS pay_type, COUNT(DISTINCT id) AS amount " +
             "FROM stock_order " +
             "WHERE fiat = :fiat " +
-            sources
+            sources + " GROUP BY pay_type) AS r GROUP BY r.pay_type ORDER BY SUM(r.amount) DESC, pay_type"
         ).bindparams(fiat=fiat)
         result = await db.all(query)
         result = list(map(lambda x: x[0], result))
+        result = list(filter(lambda x: x is not None, result))
         return web.json_response(result)
 
     async def start_server(self):
