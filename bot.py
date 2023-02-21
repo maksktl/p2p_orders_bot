@@ -59,7 +59,7 @@ async def main():
     register_all_handlers(dp)
 
     await setup(
-        f'postgresql+asyncpg://{config.db.user}:{config.db.password}@{config.db.host}/{config.db.database}')
+        f'postgresql+asyncpg://{config.db.user}:{config.db.password}@{config.db.host}/{config.db.database}?client_encoding=utf8')
     try:
         await dp.start_polling()
     finally:
