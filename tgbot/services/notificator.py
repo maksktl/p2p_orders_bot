@@ -53,11 +53,11 @@ class Notificator:
         for step in steps:
             text = messages[-1]
             new_text = f'{step.order_buy.asset} [{step.order_buy.source}] {step.strategy_type_buy.capitalize()}' \
-                       f' {", ".join(step.order_buy.pay_type)} <code>{step.order_buy.price}</code>' \
+                       f' {", ".join(step.order_buy.pay_type)} <code>{str(round(step.order_buy.price, 2))}</code>' \
                        f' → ' \
                        f'{step.order_sell.asset} [{step.order_sell.source}] {step.strategy_type_sell.capitalize()}' \
-                       f' {", ".join(step.order_sell.pay_type)} <code>{step.order_sell.price}</code> ' \
-                       f'Spread: {await OrderService.calculate_spread(step.order_sell.price, step.order_buy.price)}%\n\n'
+                       f' {", ".join(step.order_sell.pay_type)} <code>{str(round(step.order_sell.price, 2))}</code> ' \
+                       f'Spread: {str(round(await OrderService.calculate_spread(step.order_sell.price, step.order_buy.price), 2))}%\n\n'
             if len(text+new_text) > 4096:
                 messages.append(text)
                 messages.append(new_text)
