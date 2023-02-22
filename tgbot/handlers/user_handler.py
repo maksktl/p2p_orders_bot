@@ -22,7 +22,7 @@ class UserHandler(BaseHandler):
     async def user_not_accessed(message: Message):
         await message.answer(
             f"Приветствую, {message.chat.first_name}!\n"
-            f"Чтобы получить доступ к боту напиши <a href=\"tg://user?id=254727353\">Менеджеру</a>",
+            f"Чтобы получить доступ к боту отправь код <code>{message.from_user.id}</code> <a href=\"tg://user?id=254727353\">Менеджеру</a>",
         )
 
     def register_methods(self):
