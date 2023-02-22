@@ -1,4 +1,4 @@
-from sqlalchemy import sql, Column, String, UniqueConstraint
+from sqlalchemy import sql, Column, String, UniqueConstraint, BIGINT
 from sqlalchemy.dialects.postgresql import UUID
 
 from tgbot.persistance import db
@@ -17,6 +17,7 @@ class StepModel(TimedBaseModel):
     strategy_type_sell = Column(String(8), nullable=False)
     order_buy_id = Column(UUID, db.ForeignKey("stock_order.id"), nullable=False, index=True)
     order_sell_id = Column(UUID, db.ForeignKey("stock_order.id"), nullable=False, index=True)
+    spread = Column(BIGINT)
     order_buy: OrderModel = None
     order_sell: OrderModel = None
 

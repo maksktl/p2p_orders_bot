@@ -7,9 +7,9 @@ from uuid import UUID
 class UserConfigurationDto:
     asset: List[str]
     fiat: str
-    deposit: float
-    spread_from: float
-    spread_to: float
+    deposit: int
+    spread_from: int
+    spread_to: int
     exchange_sell: List[str]
     exchange_buy: List[str]
     trade_type_sell: str
@@ -35,9 +35,9 @@ class UserConfigurationDto:
     def __init__(self, payload: dict):
         self.asset = payload.get('cryptoSend', [])
         self.fiat = payload.get('fiatSend', '')
-        self.deposit = float(payload.get('deposit', 0.0))
-        self.spread_from = float(payload.get('spreadFrom', 0.0))
-        self.spread_to = float(payload.get('spreadTo', 0.0))
+        self.deposit = int(float(payload.get('deposit', 0.0))*100)
+        self.spread_from = int(float(payload.get('spreadFrom', 0.0))*100)
+        self.spread_to = int(float(payload.get('spreadTo', 0.0))*100)
         self.exchange_sell = payload.get('cryptoAggregatorsSend1', [])
         self.exchange_buy = payload.get('cryptoAggregatorsSend', [])
         self.trade_type_sell = 'maker' if (payload.get('makerTaker1', 'Мейкер')).lower() == 'мейкер' else 'taker'

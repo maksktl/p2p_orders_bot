@@ -21,6 +21,6 @@ async def setup(uri):
 
     # Create tables
     db.gino: GinoSchemaVisitor
-    # await db.gino.drop_all()  # Drop the db
+    await db.gino.drop_all()  # Drop the db
     await db.gino.create_all()
     logger.info('Database tables created')
