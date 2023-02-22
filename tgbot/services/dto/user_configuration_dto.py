@@ -42,5 +42,5 @@ class UserConfigurationDto:
         self.exchange_buy = payload.get('cryptoAggregatorsSend1', [])
         self.trade_type_sell = 'maker' if (payload.get('makerTaker', 'Мейкер')).lower() == 'мейкер' else 'taker'
         self.trade_type_buy = 'maker' if (payload.get('makerTaker1', 'Мейкер')).lower() == 'мейкер' else 'taker'
-        self.payment_sell = payload.get('banksSend', [])
-        self.payment_buy = payload.get('banksSend1', [])
+        self.payment_sell = payload.get('banksSend1', [])
+        self.payment_buy = payload.get('banksSend', [])
