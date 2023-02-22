@@ -1,4 +1,4 @@
-from sqlalchemy import sql, Column, String, ARRAY, Numeric
+from sqlalchemy import sql, Column, String, ARRAY, DECIMAL
 from sqlalchemy.dialects.postgresql import UUID
 
 from tgbot.persistance.models import TimedBaseModel, UserModel
@@ -12,9 +12,9 @@ class UserConfigurationModel(TimedBaseModel):
     user_id = Column(UUID, nullable=False)
     asset = Column(ARRAY(String), nullable=False)
     fiat = Column(String(8), nullable=False)
-    deposit = Column(Numeric, nullable=False)
-    spread_from = Column(Numeric, nullable=False)
-    spread_to = Column(Numeric, nullable=False)
+    deposit = Column(DECIMAL(14, 2), nullable=False)
+    spread_from = Column(DECIMAL(14, 2), nullable=False)
+    spread_to = Column(DECIMAL(14, 2), nullable=False)
     exchange_sell = Column(ARRAY(String), nullable=False, default=[])
     exchange_buy = Column(ARRAY(String), nullable=False, default=[])
     trade_type_sell = Column(String(8), nullable=False)

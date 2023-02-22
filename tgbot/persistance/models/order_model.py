@@ -1,4 +1,4 @@
-from sqlalchemy import sql, Column, Text, String, ARRAY, INTEGER, UniqueConstraint, Numeric
+from sqlalchemy import sql, Column, Text, String, ARRAY, INTEGER, UniqueConstraint, DECIMAL
 
 from tgbot.persistance.models import TimedBaseModel
 
@@ -15,10 +15,10 @@ class OrderModel(TimedBaseModel):
     source = Column(String(32), nullable=False, index=True)
     asset = Column(String(8), nullable=False, index=True)
     fiat = Column(String(8), nullable=False)
-    price = Column(Numeric, nullable=False, index=True)
+    price = Column(DECIMAL(14, 2), nullable=False, index=True)
     trade_type = Column(String(4), nullable=False)
-    limit_lower = Column(Numeric, nullable=False)
-    limit_upper = Column(Numeric, nullable=False)
-    capital = Column(Numeric)
+    limit_lower = Column(DECIMAL(14, 2), nullable=False)
+    limit_upper = Column(DECIMAL(14, 2), nullable=False)
+    capital = Column(DECIMAL(14, 2))
     pay_type = Column(ARRAY(String), nullable=False, default=[])
     partition = Column(INTEGER, default=1, index=True)
