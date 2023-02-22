@@ -13,6 +13,7 @@ class StepFullDto:
     strategy_type_sell: str
     order_buy: OrderFullDto
     order_sell: OrderFullDto
+    spread: int
 
     def __init__(self, step: StepModel):
         self.user_id = step.user_id
@@ -20,3 +21,4 @@ class StepFullDto:
         self.strategy_type_sell = step.strategy_type_sell
         self.order_buy = OrderFullDto(step.order_buy)
         self.order_sell = OrderFullDto(step.order_sell)
+        self.spread = step.spread
