@@ -38,9 +38,9 @@ class UserConfigurationDto:
         self.deposit = float(payload.get('deposit', 0.0))
         self.spread_from = float(payload.get('spreadFrom', 0.0))
         self.spread_to = float(payload.get('spreadTo', 0.0))
-        self.exchange_sell = payload.get('cryptoAggregatorsSend', [])
-        self.exchange_buy = payload.get('cryptoAggregatorsSend1', [])
-        self.trade_type_sell = 'maker' if (payload.get('makerTaker', 'Мейкер')).lower() == 'мейкер' else 'taker'
-        self.trade_type_buy = 'maker' if (payload.get('makerTaker1', 'Мейкер')).lower() == 'мейкер' else 'taker'
+        self.exchange_sell = payload.get('cryptoAggregatorsSend1', [])
+        self.exchange_buy = payload.get('cryptoAggregatorsSend', [])
+        self.trade_type_sell = 'maker' if (payload.get('makerTaker1', 'Мейкер')).lower() == 'мейкер' else 'taker'
+        self.trade_type_buy = 'maker' if (payload.get('makerTaker', 'Мейкер')).lower() == 'мейкер' else 'taker'
         self.payment_sell = payload.get('banksSend1', [])
         self.payment_buy = payload.get('banksSend', [])
