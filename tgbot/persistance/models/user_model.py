@@ -38,3 +38,4 @@ class UserModel(TimedBaseModel):
         self.telegram_id = user_dto.telegram_id or self.telegram_id
         self.telegram_url = user_dto.telegram_url or self.telegram_url
         self.phone_number = user_dto.phone_number or self.phone_number
+        return self
