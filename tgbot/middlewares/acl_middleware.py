@@ -27,6 +27,10 @@ class ACLMiddleware(BaseMiddleware):
             user_dto = UserDto()
             user_dto.fill_from_user(message.from_user)
             user = await self.__user_service.create_user(user_dto)
+        if user.name != message.from_user.first_name or user.name == 'Not Authorized':
+            user_dto = UserDto()
+            user_dto.fill_from_user(message.from_user)
+            user = await self.__user_service.update_user(user_dto)
         data['user'] = user
         data['config_active'] = await self.is_config_active(user.id)
 
