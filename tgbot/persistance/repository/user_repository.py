@@ -20,7 +20,7 @@ class UserRepository:
 
     @staticmethod
     async def update(user: UserModel):
-        return await user.update(
+        await user.update(
             name=user.name,
             surname=user.surname,
             middle_name=user.middle_name,
@@ -31,6 +31,7 @@ class UserRepository:
             bot_access=user.bot_access,
             admin=user.admin
         ).apply()
+        return user
 
     @staticmethod
     async def get_by_id(id) -> Optional[UserModel]:
