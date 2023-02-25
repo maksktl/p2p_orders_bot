@@ -28,31 +28,33 @@ class UserHandler(BaseHandler):
         )
 
     @staticmethod
-    async def user_lk(message: Message, user_configuration: UserConfigurationFullDto):
+    async def user_lk(message: Message, config, user_configuration: UserConfigurationFullDto, config_active):
         config_text = '❌ Поиск связок не настроен'
         if user_configuration:
-            config_text = f'Параметры вашей конфигурации:\n' \
-                          f'Фиат: {user_configuration.fiat}\n' \
-                          f'Выбранные криптовалюты: {",".join(user_configuration.asset)}\n' \
+            config_text = f'<b>Параметры вашей конфигурации:</b>\n' \
+                          f'<b>Фиат: 💰</b> {user_configuration.fiat}\n' \
+                          f'<b>Выбранные криптовалюты: 💎</b> {",".join(user_configuration.asset)}\n' \
                           f'\n' \
-                          f'Установленный лимит: {user_configuration.deposit / 100.0}\n' \
-                          f'Установленный диапозон спреда: {user_configuration.spread_from / 100.0}' \
+                          f'<b>Установленный лимит: 📛</b> {user_configuration.deposit / 100.0}\n' \
+                          f'<b>Установленный диапозон спреда: ↔️</b> {user_configuration.spread_from / 100.0}' \
                           f' - {user_configuration.spread_to / 100.0}\n' \
                           f'\n' \
-                          f'<b>Покупка</b>\n' \
-                          f'Выбранные биржи: {",".join(user_configuration.exchange_buy)}\n' \
-                          f'Выбранные способы оплаты: {",".join(user_configuration.payment_buy)}\n' \
-                          f'Покупаете как: {user_configuration.trade_type_buy}\n' \
-                          f'\n'\
-                          f'<b>Продажа</b>\n' \
-                          f'Выбранные биржи: {",".join(user_configuration.exchange_sell)}\n' \
-                          f'Выбранные способы оплаты: {",".join(user_configuration.payment_sell)}\n' \
-                          f'Продаете как: {user_configuration.trade_type_sell}'
-        await message.answer(f'Профиль: 📜\n'
-                             f'ID: <code>{message.from_user.id}</code>\n'
-                             f'\n'
-                             f'Имя: {message.from_user.first_name}\n'
-                             f'\n'+config_text)
+                          f'<b>Покупка 📉</b>\n' \
+                          f'<b>Выбранные биржи: 📑</b> {",".join(user_configuration.exchange_buy)}\n' \
+                          f'<b>Выбранные способы оплаты: 💳</b> {",".join(user_configuration.payment_buy)}\n' \
+                          f'<b>Покупаете как: 👤</b> {user_configuration.trade_type_buy}\n' \
+                          f'\n' \
+                          f'<b>Продажа 📈</b>\n' \
+                          f'<b>Выбранные биржи: 📑</b> {",".join(user_configuration.exchange_sell)}\n' \
+                          f'<b>Выбранные способы оплаты: 💳</b> {",".join(user_configuration.payment_sell)}\n' \
+                          f'<b>Продаете как: 👤</b> {user_configuration.trade_type_sell}'
+        await message.answer_photo(photo='https://i.ibb.co/kG48KTR/2-3.png',
+                                   caption=f'<b>Профиль:</b> 📜\n'
+                                           f'<b>ID:</b> <code>{message.from_user.id}</code>\n'
+                                           f'<b>Имя:</b> {message.from_user.first_name}\n'
+                                           f'\n' + config_text,
+                                   reply_markup=ReplyKeyboard.get_web_app_conf_keyboard(config.tg_bot.webapp_url,
+                                                                                        config_active))
 
     def register_methods(self):
         self.dp.register_message_handler(UserHandler.user_start, commands=["start"], state="*", **self._general_filters)
