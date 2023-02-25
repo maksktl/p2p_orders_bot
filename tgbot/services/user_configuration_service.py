@@ -4,6 +4,7 @@ from uuid import UUID
 
 from tgbot.persistance.models import UserConfigurationModel
 from tgbot.persistance.repository import UserRepository
+from tgbot.persistance.repository.step_repository import StepRepository
 from tgbot.persistance.repository.user_configuration_repository import UserConfigurationRepository
 from tgbot.services.dto.user_configuration_dto import UserConfigurationDto
 from tgbot.services.dto.user_configuration_full_dto import UserConfigurationFullDto
@@ -23,6 +24,7 @@ class UserConfigurationService:
     def __init__(self):
         self.__user_configuration_repository = UserConfigurationRepository.get_instance()
         self.__user_repository = UserRepository.get_instance()
+        self.__step_repository = StepRepository.get_instance()
 
     async def get_user_conf(self, id) -> UserConfigurationFullDto:
         user_model = await self.__user_configuration_repository.get_by_id(id)
@@ -56,6 +58,7 @@ class UserConfigurationService:
         if not user:
             raise Exception("User not found")
         dto.user_internal_id = user.id
+        await self.__step_repository.delete_by_user_id(user.id)  # Delete old steps
 
         configuration = await self.__user_configuration_repository.get_by_tg_id(user_id)
         if not configuration:
