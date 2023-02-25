@@ -1,5 +1,5 @@
 from aiogram import Dispatcher
-from aiogram.types import Message, ReplyKeyboardMarkup
+from aiogram.types import Message, ReplyKeyboardMarkup, ReplyKeyboardRemove
 
 from tgbot.config import Config
 from tgbot.handlers.base import BaseHandler
@@ -23,6 +23,7 @@ class UserHandler(BaseHandler):
         await message.answer(
             f"Приветствую, {message.chat.first_name}!\n"
             f"Чтобы получить доступ к боту отправь код <code>{message.from_user.id}</code> <a href=\"tg://user?id=254727353\">Менеджеру</a>",
+            reply_markup=ReplyKeyboardRemove()
         )
 
     def register_methods(self):
