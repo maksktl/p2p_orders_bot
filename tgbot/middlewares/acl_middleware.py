@@ -6,6 +6,7 @@ from aiogram import types
 from aiogram.dispatcher.middlewares import BaseMiddleware
 
 from tgbot.services.dto import UserDto
+from tgbot.services.dto.user_configuration_full_dto import UserConfigurationFullDto
 from tgbot.services.user_configuration_service import UserConfigurationService
 from tgbot.services.user_service import UserService
 
@@ -32,7 +33,9 @@ class ACLMiddleware(BaseMiddleware):
             user_dto.fill_from_user(message.from_user)
             user = await self.__user_service.update_user(user_dto)
         data['user'] = user
-        data['config_active'] = await self.is_config_active(user.id)
+        data['user_configuration'] = await self.get_user_configuration(user.id)
+        data['config_active'] = not data.get('user_configuration').deleted if data.get(
+            'user_configuration') is not None else None
 
     async def on_pre_process_callback_query(self, call: types.CallbackQuery, data: dict, *arg, **kwargs):
         try:
@@ -46,13 +49,11 @@ class ACLMiddleware(BaseMiddleware):
 
         data['user'] = user
 
-    async def is_config_active(self, user_id: UUID) -> Optional[bool]:
+    async def get_user_configuration(self, user_id: UUID) -> Optional[UserConfigurationFullDto]:
         try:
             user_config = await self.__user_configuration_service.get_user_conf_by_user_id(user_id)
             if user_config is not None and not user_config.deleted:
-                return True
+                return user_config
         except Exception as err:
             return None
-        if user_config is None:
-            return None
-        return False
+        return None
