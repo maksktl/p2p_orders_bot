@@ -27,7 +27,8 @@ class UserHandler(BaseHandler):
             reply_markup=ReplyKeyboardRemove()
         )
 
-    async def user_lk(self, message: Message, user_configuration: UserConfigurationFullDto):
+    @staticmethod
+    async def user_lk(message: Message, user_configuration: UserConfigurationFullDto):
         config_text = '❌ Поиск связок не настроен'
         if user_configuration:
             config_text = f'Параметры вашей конфигурации:\n' \
@@ -38,12 +39,12 @@ class UserHandler(BaseHandler):
                           f'Установленный диапозон спреда: {user_configuration.spread_from / 100.0}' \
                           f' - {user_configuration.spread_to / 100.0}\n' \
                           f'\n' \
-                          f'<bold>Покупка</bold>\n' \
+                          f'<b>Покупка</b>\n' \
                           f'Выбранные биржи: {",".join(user_configuration.exchange_buy)}\n' \
                           f'Выбранные способы оплаты: {",".join(user_configuration.payment_buy)}\n' \
                           f'Покупаете как: {user_configuration.trade_type_buy}\n' \
                           f'\n'\
-                          f'<bold>Продажа</bold>\n' \
+                          f'<b>Продажа</b>\n' \
                           f'Выбранные биржи: {",".join(user_configuration.exchange_sell)}\n' \
                           f'Выбранные способы оплаты: {",".join(user_configuration.payment_sell)}\n' \
                           f'Продаете как: {user_configuration.trade_type_sell}'
@@ -55,5 +56,5 @@ class UserHandler(BaseHandler):
 
     def register_methods(self):
         self.dp.register_message_handler(UserHandler.user_start, commands=["start"], state="*", **self._general_filters)
-        self.dp.register_message_handler(UserHandler.user_lk(), commands=["lk"], state="*", **self._general_filters)
+        self.dp.register_message_handler(UserHandler.user_lk, commands=["lk"], state="*", **self._general_filters)
         self.dp.register_message_handler(UserHandler.user_not_accessed, bot_access=False)
