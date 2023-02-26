@@ -2,6 +2,7 @@ from aiogram import Dispatcher
 from aiogram.types import Message
 
 from tgbot.handlers.base import BaseHandler
+from tgbot.keyboards.reply import ReplyKeyboard
 from tgbot.services.user_service import UserService
 
 
@@ -11,8 +12,11 @@ class AdminHandler(BaseHandler):
         super().__init__(dp)
 
     @staticmethod
-    async def admin_start(message: Message):
-        await message.reply("Добрый день, уважаемый администратор.")
+    async def admin_start(message: Message, config, config_active):
+        await message.reply("Добрый день, уважаемый администратор.",
+                            reply_markup=ReplyKeyboard.get_web_app_conf_keyboard(config.tg_bot.webapp_url,
+                                                                                 config_active)
+                            )
 
     @staticmethod
     async def help(message: Message):
