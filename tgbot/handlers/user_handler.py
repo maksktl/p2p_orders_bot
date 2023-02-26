@@ -56,7 +56,15 @@ class UserHandler(BaseHandler):
                                    reply_markup=ReplyKeyboard.get_web_app_conf_keyboard(config.tg_bot.webapp_url,
                                                                                         config_active))
 
+    @staticmethod
+    async def default_message(message: Message):
+        await message.answer('Вы можете использовать следующие команды:\n\n'
+                             '/start - стартовое сообщение бота с конфигурацией свзяки\n'
+                             '/lk - Данные вашего профиля в боте\n\n'
+                             'По остальным вопросам пишите <a href=\"tg://user?id=254727353\">Менеджеру</a>')
+
     def register_methods(self):
         self.dp.register_message_handler(UserHandler.user_start, commands=["start"], state="*", **self._general_filters)
         self.dp.register_message_handler(UserHandler.user_lk, commands=["lk"], state="*", **self._general_filters)
         self.dp.register_message_handler(UserHandler.user_not_accessed, bot_access=False)
+        self.dp.register_message_handler(UserHandler.default_message, **self._general_filters)
