@@ -33,8 +33,8 @@ def register_all_filters(dp):
 
 def register_all_handlers(dp):
     handlers.append(AdminHandler(dp))
-    handlers.append(UserHandler(dp))
     handlers.append(P2PHandler(dp))
+    handlers.append(UserHandler(dp))
 
 
 async def main():
