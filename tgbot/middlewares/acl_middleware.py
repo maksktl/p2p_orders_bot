@@ -52,7 +52,7 @@ class ACLMiddleware(BaseMiddleware):
     async def get_user_configuration(self, user_id: UUID) -> Optional[UserConfigurationFullDto]:
         try:
             user_config = await self.__user_configuration_service.get_user_conf_by_user_id(user_id)
-            if user_config is not None and not user_config.deleted:
+            if user_config is not None:
                 return user_config
         except Exception as err:
             return None
