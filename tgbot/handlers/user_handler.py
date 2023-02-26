@@ -29,7 +29,7 @@ class UserHandler(BaseHandler):
 
     @staticmethod
     async def user_lk(message: Message, config, user_configuration: UserConfigurationFullDto, config_active):
-        config_text = '❌ Поиск связок не настроен'
+        config_text = '❌ Поиск связок: не настроен'
         if user_configuration:
             config_text = f'<b>Параметры вашей конфигурации:</b>\n' \
                           f'<b>Фиат: 💰</b> {user_configuration.fiat}\n' \
@@ -47,7 +47,9 @@ class UserHandler(BaseHandler):
                           f'<b>Продажа 📈</b>\n' \
                           f'<b>Выбранные биржи: 📑</b> {",".join(user_configuration.exchange_sell)}\n' \
                           f'<b>Выбранные способы оплаты: 💳</b> {",".join(user_configuration.payment_sell)}\n' \
-                          f'<b>Продаете как: 👤</b> {user_configuration.trade_type_sell}'
+                          f'<b>Продаете как: 👤</b> {user_configuration.trade_type_sell}\n' \
+                          f'\n' \
+                          f'<b>Поиск связок: {"✅ Активен" if not user_configuration.deleted else "❌ Не активен"}</b>'
         await message.answer_photo(photo='https://i.ibb.co/kG48KTR/2-3.png',
                                    caption=f'<b>Профиль:</b> 📜\n'
                                            f'<b>ID:</b> <code>{message.from_user.id}</code>\n'
