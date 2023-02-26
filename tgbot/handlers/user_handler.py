@@ -33,20 +33,20 @@ class UserHandler(BaseHandler):
         if user_configuration:
             config_text = f'<b>Параметры вашей конфигурации:</b>\n' \
                           f'<b>Фиат: 💰</b> {user_configuration.fiat}\n' \
-                          f'<b>Выбранные криптовалюты: 💎</b> {",".join(user_configuration.asset)}\n' \
+                          f'<b>Выбранные криптовалюты: 💎</b> {", ".join(user_configuration.asset)}\n' \
                           f'\n' \
                           f'<b>Установленный лимит: 📛</b> {user_configuration.deposit / 100.0}\n' \
                           f'<b>Установленный диапозон спреда: ↔️</b> {user_configuration.spread_from / 100.0}' \
                           f' - {user_configuration.spread_to / 100.0}\n' \
                           f'\n' \
                           f'<b>Покупка 📉</b>\n' \
-                          f'<b>Выбранные биржи: 📑</b> {",".join(user_configuration.exchange_buy)}\n' \
-                          f'<b>Выбранные способы оплаты: 💳</b> {",".join(user_configuration.payment_buy)}\n' \
+                          f'<b>Выбранные биржи: 📑</b> {", ".join(user_configuration.exchange_buy)}\n' \
+                          f'<b>Выбранные способы оплаты: 💳</b> {", ".join(user_configuration.payment_buy)}\n' \
                           f'<b>Покупаете как: 👤</b> {user_configuration.trade_type_buy}\n' \
                           f'\n' \
                           f'<b>Продажа 📈</b>\n' \
-                          f'<b>Выбранные биржи: 📑</b> {",".join(user_configuration.exchange_sell)}\n' \
-                          f'<b>Выбранные способы оплаты: 💳</b> {",".join(user_configuration.payment_sell)}\n' \
+                          f'<b>Выбранные биржи: 📑</b> {", ".join(user_configuration.exchange_sell)}\n' \
+                          f'<b>Выбранные способы оплаты: 💳</b> {", ".join(user_configuration.payment_sell)}\n' \
                           f'<b>Продаете как: 👤</b> {user_configuration.trade_type_sell}\n' \
                           f'\n' \
                           f'<b>Поиск связок: {"✅ Активен" if not user_configuration.deleted else "❌ Не активен"}</b>'
