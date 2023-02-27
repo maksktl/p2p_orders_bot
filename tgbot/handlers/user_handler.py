@@ -40,18 +40,18 @@ class UserHandler(BaseHandler):
                           f' - {user_configuration.spread_to / 100.0}\n' \
                           f'\n' \
                           f'<b>Покупка 📉</b>\n' \
-                          f'<b>Выбранные биржи: 📑</b> {", ".join(user_configuration.exchange_buy)}\n' \
+                          f'<b>Выбранные биржи: 📊</b> {", ".join(user_configuration.exchange_buy)}\n' \
                           f'<b>Выбранные способы оплаты: 💳</b> {", ".join(user_configuration.payment_buy)}\n' \
                           f'<b>Покупаете как: 👤</b> {user_configuration.trade_type_buy}\n' \
                           f'\n' \
                           f'<b>Продажа 📈</b>\n' \
-                          f'<b>Выбранные биржи: 📑</b> {", ".join(user_configuration.exchange_sell)}\n' \
+                          f'<b>Выбранные биржи: 📊</b> {", ".join(user_configuration.exchange_sell)}\n' \
                           f'<b>Выбранные способы оплаты: 💳</b> {", ".join(user_configuration.payment_sell)}\n' \
                           f'<b>Продаете как: 👤</b> {user_configuration.trade_type_sell}\n' \
                           f'\n' \
                           f'<b>Поиск связок: {"✅ Активен" if not user_configuration.deleted else "❌ Не активен"}</b>'
         await message.answer_photo(photo='https://i.ibb.co/kG48KTR/2-3.png',
-                                   caption=f'<b>Профиль:</b> 📜\n'
+                                   caption=f'<b>Профиль:</b> 🧑🏽‍💻\n'
                                            f'<b>ID:</b> <code>{message.from_user.id}</code>\n'
                                            f'<b>Имя:</b> {message.from_user.first_name}\n'
                                            f'\n' + config_text,
