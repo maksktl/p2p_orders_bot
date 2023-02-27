@@ -2,6 +2,7 @@ import logging
 
 from tgbot.persistance.models import UserModel
 from tgbot.persistance.repository import UserRepository
+from tgbot.persistance.repository.user_configuration_repository import UserConfigurationRepository
 from tgbot.services.dto import UserFullDto, UserDto
 
 logger = logging.getLogger(__name__)
@@ -18,6 +19,7 @@ class UserService:
 
     def __init__(self):
         self.__user_repository = UserRepository.get_instance()
+        self.__user_configuration_repository = UserConfigurationRepository.get_instance()
 
     async def get_user(self, id) -> UserFullDto:
         user_model = await self.__user_repository.get_by_id(id)
@@ -62,4 +64,8 @@ class UserService:
             user_model.admin = admin
         if bot_access is not None:
             user_model.bot_access = bot_access
+            if not bot_access:
+                user_model.admin = False
+                self.__user_configuration_repository.delete_by_user_id(user_model.id)
+
         await self.__user_repository.update(user_model)
