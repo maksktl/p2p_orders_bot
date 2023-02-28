@@ -13,7 +13,8 @@ class AdminHandler(BaseHandler):
 
     @staticmethod
     async def admin_start(message: Message, config, config_active):
-        await message.reply("Добрый день, уважаемый администратор.",
+        await message.reply("Здравствуйте, уважаемый администратор.\n"
+                            "Чтобы посмотреть список команд, отправьте боту /help",
                             reply_markup=ReplyKeyboard.get_web_app_conf_keyboard(config.tg_bot.webapp_url,
                                                                                  config_active)
                             )
