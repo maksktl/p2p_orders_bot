@@ -22,8 +22,10 @@ class UserHandler(BaseHandler):
     @staticmethod
     async def user_not_accessed(message: Message):
         await message.answer(
-            f"Приветствую, {message.chat.first_name}!\n"
-            f"Чтобы получить доступ к боту отправь код <code>{message.from_user.id}</code> <a href=\"tg://user?id=254727353\">Менеджеру</a>",
+            f"Привет от команды white crypto. \n"
+            f"Для того чтобы активировать бота нужно направить данный код <code>{message.from_user.id}</code> на whitecryptobot@gmail.com"
+            f" с почты которую вы указывали для получения"
+            f" обучающего материала.",
             reply_markup=ReplyKeyboardRemove()
         )
 
