@@ -65,7 +65,7 @@ class UserHandler(BaseHandler):
         await message.answer('Вы можете использовать следующие команды:\n\n'
                              '/start - стартовое сообщение бота с конфигурацией свзяки\n'
                              '/lk - Данные вашего профиля в боте\n\n'
-                             'По остальным вопросам пишите <a href=\"tg://user?id=254727353\">Менеджеру</a>')
+                             'По остальным вопросам пишите <a href=\"https://t.me/whitecryptosupport\">Менеджеру</a>')
 
     def register_methods(self):
         self.dp.register_message_handler(UserHandler.user_start, commands=["start"], state="*", **self._general_filters)
