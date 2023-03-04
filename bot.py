@@ -9,6 +9,7 @@ from tgbot.config import load_config
 from tgbot.filters.access_filter import BotAccessFilter
 from tgbot.filters.admin_filter import IsAdminFilter
 from tgbot.handlers.admin_hander import AdminHandler
+from tgbot.handlers.error_handler import ErrorHandler
 from tgbot.handlers.p2p_handler import P2PHandler
 from tgbot.handlers.user_handler import UserHandler
 from tgbot.middlewares.acl_middleware import ACLMiddleware
@@ -35,6 +36,7 @@ def register_all_handlers(dp):
     handlers.append(AdminHandler(dp))
     handlers.append(P2PHandler(dp))
     handlers.append(UserHandler(dp))
+    handlers.append(ErrorHandler(dp))
 
 
 async def main():
