@@ -22,7 +22,7 @@ class UserHandler(BaseHandler):
     @staticmethod
     async def user_not_accessed(message: Message):
         await message.answer(
-            f'Привет от команды white crypto. \n'
+            f'Привет от команды Crypto-Max. \n'
             f'Для того чтобы активировать бота нужно направить данный код <code>{message.from_user.id} '
             f'</code><a href="https://t.me/BatFlex">Менеджеру</a>',
             reply_markup=ReplyKeyboardRemove()
