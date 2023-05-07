@@ -5,7 +5,7 @@ SERVICE_NAME="tgbot"
 SERVICE_NAME2="server"
 
 # Specify the path to the Git repository
-REPO_PATH="/opt/p2p_telegram_bot"
+REPO_PATH="/opt/p2p_orders_bot"
 
 # Navigate to the Git repository
 cd "$REPO_PATH"
