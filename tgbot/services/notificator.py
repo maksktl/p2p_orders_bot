@@ -65,4 +65,4 @@ class Notificator:
                 messages[-1] = text + new_text
 
         for message in messages:
-            await Notificator.BOT.send_message(user_configuration.user.telegram_id, message)
+            await Notificator.BOT.send_message(user_configuration.user.telegram_id, message, protect_content=True)
