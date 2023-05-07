@@ -51,5 +51,5 @@ def load_config(path: str = None):
         ),
         misc=Miscellaneous(),
         webapp_port=env.int("WEBAPP_PORT"),
-        provider_token=env.int("PROVIDER_TOKEN")
+        provider_token=env.str("PROVIDER_TOKEN")
     )
