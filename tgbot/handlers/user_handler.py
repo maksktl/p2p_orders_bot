@@ -1,5 +1,5 @@
 from aiogram import Dispatcher
-from aiogram.types import Message, ReplyKeyboardRemove, LabeledPrice
+from aiogram.types import Message, ReplyKeyboardRemove, LabeledPrice, PreCheckoutQuery
 
 from tgbot.config import Config
 from tgbot.handlers.base import BaseHandler
@@ -44,6 +44,13 @@ class UserHandler(BaseHandler):
 
         await message.bot.send_invoice(message.chat.id, **item.generate_invoice(), payload="1")
 
+    @staticmethod
+    async def process_pre_checkout_query(query: PreCheckoutQuery):
+        await query.bot.answer_pre_checkout_query(pre_checkout_query_id=query.id, ok=True)
+        await query.bot.send_message(chat_id=query.from_user.id, text="Спасибо за покупку! \n"
+                                                                      "Теперь вы имеете полный доступ к боту!"
+                                                                      "\n"
+                                                                      "Нажмите /start для начала пользования.")
 
     @staticmethod
     async def user_lk(message: Message, config, user_configuration: UserConfigurationFullDto, config_active):
@@ -84,9 +91,9 @@ class UserHandler(BaseHandler):
                              '/lk - Данные вашего профиля в боте\n\n'
                              'По остальным вопросам пишите <a href=\"https://t.me/BatFlex\">Менеджеру</a>')
 
-
     def register_methods(self):
         self.dp.register_message_handler(UserHandler.user_start, commands=["start"], state="*", **self._general_filters)
         self.dp.register_message_handler(UserHandler.user_lk, commands=["lk"], state="*", **self._general_filters)
         self.dp.register_message_handler(UserHandler.user_not_accessed, bot_access=False)
         self.dp.register_message_handler(UserHandler.default_message, **self._general_filters)
+        self.dp.register_pre_checkout_query_handler(UserHandler.process_pre_checkout_query)
