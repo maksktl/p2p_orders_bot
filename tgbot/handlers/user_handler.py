@@ -22,10 +22,9 @@ class UserHandler(BaseHandler):
     @staticmethod
     async def user_not_accessed(message: Message):
         await message.answer(
-            f"Привет от команды white crypto. \n"
-            f"Для того чтобы активировать бота нужно направить данный код <code>{message.from_user.id}</code> на whitecryptobot@gmail.com"
-            f" с почты которую вы указывали для получения"
-            f" обучающего материала.",
+            f'Привет от команды white crypto. \n'
+            f'Для того чтобы активировать бота нужно направить данный код <code>{message.from_user.id} '
+            f'</code><a href="https://t.me/BatFlex">Менеджеру</a>',
             reply_markup=ReplyKeyboardRemove()
         )
 
@@ -52,7 +51,7 @@ class UserHandler(BaseHandler):
                           f'<b>Продаете как: 👤</b> {user_configuration.trade_type_sell}\n' \
                           f'\n' \
                           f'<b>Поиск связок: {"✅ Активен" if not user_configuration.deleted else "❌ Не активен"}</b>'
-        await message.answer_photo(photo='https://i.ibb.co/kG48KTR/2-3.png',
+        await message.answer_photo(photo='https://i.ibb.co/vXcNK2K/Color-logo-with-background.png',
                                    caption=f'<b>Профиль:</b> 🧑🏽‍💻\n'
                                            f'<b>ID:</b> <code>{message.from_user.id}</code>\n'
                                            f'<b>Имя:</b> {message.from_user.first_name}\n'
@@ -65,7 +64,7 @@ class UserHandler(BaseHandler):
         await message.answer('Вы можете использовать следующие команды:\n\n'
                              '/start - стартовое сообщение бота с конфигурацией свзяки\n'
                              '/lk - Данные вашего профиля в боте\n\n'
-                             'По остальным вопросам пишите <a href=\"https://t.me/whitecryptosupport\">Менеджеру</a>')
+                             'По остальным вопросам пишите <a href=\"https://t.me/BatFlex\">Менеджеру</a>')
 
     def register_methods(self):
         self.dp.register_message_handler(UserHandler.user_start, commands=["start"], state="*", **self._general_filters)
