@@ -30,6 +30,7 @@ class Config:
     db: DbConfig
     misc: Miscellaneous
     webapp_port: int
+    provider_token: str
 
 
 def load_config(path: str = None):
@@ -49,5 +50,6 @@ def load_config(path: str = None):
             database=env.str('DB_NAME')
         ),
         misc=Miscellaneous(),
-        webapp_port=env.int("WEBAPP_PORT")
+        webapp_port=env.int("WEBAPP_PORT"),
+        provider_token=env.int("PROVIDER_TOKEN")
     )
