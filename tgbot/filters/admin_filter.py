@@ -3,7 +3,7 @@ import typing
 from aiogram import types
 from aiogram.dispatcher.filters import BoundFilter
 
-from tgbot.services.user_service import UserService
+from tgbot.services.RestService import RestService
 
 
 class IsAdminFilter(BoundFilter):
@@ -13,5 +13,5 @@ class IsAdminFilter(BoundFilter):
         self.is_admin = is_admin
 
     async def check(self, message: types.Message):
-        user = await UserService.get_instance().get_user_by_tg_id(message.from_user.id)
+        user = await RestService.get_instance().current_user(message.from_user)
         return user.admin == self.is_admin

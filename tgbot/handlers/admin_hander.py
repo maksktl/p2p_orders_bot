@@ -3,7 +3,6 @@ from aiogram.types import Message
 
 from tgbot.handlers.base import BaseHandler
 from tgbot.keyboards.reply import ReplyKeyboard
-from tgbot.services.user_service import UserService
 
 
 class AdminHandler(BaseHandler):

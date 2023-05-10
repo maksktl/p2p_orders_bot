@@ -1,16 +1,6 @@
 from dataclasses import dataclass
-from typing import List
 
 from environs import Env
-
-
-@dataclass
-class DbConfig:
-    host: str
-    password: str
-    user: str
-    database: str
-
 
 @dataclass
 class TgBot:
@@ -26,30 +16,28 @@ class Miscellaneous:
 
 @dataclass
 class Config:
+    _instance = None
+
     tg_bot: TgBot
-    db: DbConfig
     misc: Miscellaneous
     webapp_port: int
     provider_token: str
+    api_base_url: str
 
-
-def load_config(path: str = None):
-    env = Env()
-    env.read_env(path)
-
-    return Config(
-        tg_bot=TgBot(
-            token=env.str("BOT_TOKEN"),
-            use_redis=env.bool("USE_REDIS"),
-            webapp_url=env.str("WEBAPP_URL"),
-        ),
-        db=DbConfig(
-            host=env.str('DB_HOST'),
-            password=env.str('DB_PASS'),
-            user=env.str('DB_USER'),
-            database=env.str('DB_NAME')
-        ),
-        misc=Miscellaneous(),
-        webapp_port=env.int("WEBAPP_PORT"),
-        provider_token=env.str("PROVIDER_TOKEN")
-    )
+    @classmethod
+    def get_instance(cls, path: str = None):
+        if cls._instance is None:
+            env = Env()
+            env.read_env(path)
+            cls._instance = Config(
+                tg_bot=TgBot(
+                    token=env.str("BOT_TOKEN"),
+                    use_redis=env.bool("USE_REDIS"),
+                    webapp_url=env.str("WEBAPP_URL"),
+                ),
+                misc=Miscellaneous(),
+                webapp_port=env.int("WEBAPP_PORT"),
+                provider_token=env.str("PROVIDER_TOKEN"),
+                api_base_url=env.str("API_BASE_URL")
+            )
+        return cls._instance

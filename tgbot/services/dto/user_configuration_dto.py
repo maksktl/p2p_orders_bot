@@ -8,39 +8,39 @@ class UserConfigurationDto:
     asset: List[str]
     fiat: str
     deposit: int
-    spread_from: int
-    spread_to: int
-    exchange_sell: List[str]
-    exchange_buy: List[str]
-    trade_type_sell: str
-    trade_type_buy: str
-    payment_sell: List[str]
-    payment_buy: List[str]
+    spreadFrom: int
+    spreadTo: int
+    exchangeSell: List[str]
+    exchangeBuy: List[str]
+    tradeTypeSell: str
+    tradeTypeBuy: str
+    paymentSell: List[str]
+    paymentBuy: List[str]
     id: UUID = None
-    user_internal_id: UUID = None
+    userId: UUID = None
 
     def __init__(self):
         self.asset = None
         self.fiat = None
         self.deposit = None
-        self.spread_from = None
-        self.spread_to = None
-        self.exchange_sell = None
-        self.exchange_buy = None
-        self.trade_type_sell = None
-        self.trade_type_buy = None
-        self.payment_sell = None
-        self.payment_buy = None
+        self.spreadFrom = None
+        self.spreadTo = None
+        self.exchangeSell = None
+        self.exchangeBuy = None
+        self.tradeTypeSell = None
+        self.tradeTypeBuy = None
+        self.paymentSell = None
+        self.paymentBuy = None
 
     def __init__(self, payload: dict):
         self.asset = payload.get('cryptoSend', [])
         self.fiat = payload.get('fiatSend', '')
         self.deposit = int(float(payload.get('deposit', 0.0))*100)
-        self.spread_from = int(float(payload.get('spreadFrom', 0.0))*100)
-        self.spread_to = int(float(payload.get('spreadTo', 0.0))*100)
-        self.exchange_sell = payload.get('cryptoAggregatorsSend1', [])
-        self.exchange_buy = payload.get('cryptoAggregatorsSend', [])
-        self.trade_type_sell = 'maker' if (payload.get('makerTaker1', 'Мейкер')).lower() == 'мейкер' else 'taker'
-        self.trade_type_buy = 'maker' if (payload.get('makerTaker', 'Мейкер')).lower() == 'мейкер' else 'taker'
-        self.payment_sell = payload.get('banksSend1', [])
-        self.payment_buy = payload.get('banksSend', [])
+        self.spreadFrom = int(float(payload.get('spreadFrom', 0.0)) * 100)
+        self.spreadTo = int(float(payload.get('spreadTo', 0.0)) * 100)
+        self.exchangeSell = payload.get('cryptoAggregatorsSend1', [])
+        self.exchangeBuy = payload.get('cryptoAggregatorsSend', [])
+        self.tradeTypeSell = 'maker' if (payload.get('makerTaker1', 'Мейкер')).lower() == 'мейкер' else 'taker'
+        self.tradeTypeBuy = 'maker' if (payload.get('makerTaker', 'Мейкер')).lower() == 'мейкер' else 'taker'
+        self.paymentSell = payload.get('banksSend1', [])
+        self.paymentBuy = payload.get('banksSend', [])

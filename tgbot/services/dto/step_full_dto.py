@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from uuid import UUID
 
-from tgbot.persistance.models import StepModel
 from tgbot.services.dto.order_full_dto import OrderFullDto
 
 
@@ -15,10 +14,10 @@ class StepFullDto:
     order_sell: OrderFullDto
     spread: int
 
-    def __init__(self, step: StepModel):
-        self.user_id = step.user_id
-        self.strategy_type_buy = step.strategy_type_buy
-        self.strategy_type_sell = step.strategy_type_sell
-        self.order_buy = OrderFullDto(step.order_buy)
-        self.order_sell = OrderFullDto(step.order_sell)
-        self.spread = step.spread
+    def __init__(self, payload: dict):
+        self.user_id = payload.get('userId', None)
+        self.strategy_type_buy = payload.get('strategyTypeBuy', None)
+        self.strategy_type_sell = payload.get('strategyTypeSell', None)
+        self.order_buy = payload.get('orderBuy', None)
+        self.order_sell = payload.get('orderSell', None)
+        self.spread = payload.get('spread', None)

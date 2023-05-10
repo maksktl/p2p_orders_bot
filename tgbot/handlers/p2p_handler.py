@@ -2,55 +2,47 @@ import json
 
 from aiogram import types, Dispatcher
 
+from tgbot.config import Config
 from tgbot.handlers.base import BaseHandler
 from tgbot.keyboards.reply import ReplyKeyboard
-from tgbot.services.user_configuration_service import UserConfigurationService
+from tgbot.services.RestService import RestService
+from tgbot.services.dto import UserFullDto
+from tgbot.services.dto.user_configuration_dto import UserConfigurationDto
 
 
 class P2PHandler(BaseHandler):
-    USER_CONFIGURATION_SERVICE = UserConfigurationService.get_instance()
+    REST_SERVICE = RestService.get_instance()
 
     def __init__(self, dp: Dispatcher):
         self._general_filters = {"bot_access": True}
         super().__init__(dp)
 
     @staticmethod
-    async def apply_configuration(message: types.Message, config, config_active, *args, **kwargs):
+    async def apply_configuration(message: types.Message, config, user: UserFullDto):
         web_app_data = json.loads(message.web_app_data.data)
-        await P2PHandler.USER_CONFIGURATION_SERVICE.create_or_update(web_app_data, message.from_user.id)
+        dto = UserConfigurationDto(web_app_data)
+        dto.userId = user.id
+
+        await P2PHandler.REST_SERVICE.save_user_configuration(dto)
 
         await message.answer('☑️ Успешно применили новую конфигурацию для поиска связок',
                              reply_markup=ReplyKeyboard.get_web_app_conf_keyboard(config.tg_bot.webapp_url,
                                                                                   True))
 
     @staticmethod
-    async def handle_configuration(message: types.Message, config, user, config_active, enabled: bool,
-                                   success_text: str):
-        if enabled == config_active:
-            await message.answer(f'Поиск связок уже {"был активирован" if enabled else "был отключен"}',
-                                 reply_markup=ReplyKeyboard.get_web_app_conf_keyboard(config.tg_bot.webapp_url,
-                                                                                      config_active))
-            return
-        is_enabled = await P2PHandler.USER_CONFIGURATION_SERVICE.enable_configuration(
-            user.id) if enabled else await P2PHandler.USER_CONFIGURATION_SERVICE.disable_configuration(user.id)
-        if is_enabled:
-            await message.answer(success_text,
-                                 reply_markup=ReplyKeyboard.get_web_app_conf_keyboard(config.tg_bot.webapp_url,
-                                                                                      enabled))
-            return
-        await message.answer('Произошла ошибка, разработчики уже над ней работают :)',
+    async def disable_configuration(message: types.Message, user: UserFullDto, config: Config, config_active):
+        await P2PHandler.REST_SERVICE.disable_user_configuration(user.id)
+        await message.answer('Поиск связок успешно отключен',
                              reply_markup=ReplyKeyboard.get_web_app_conf_keyboard(config.tg_bot.webapp_url,
-                                                                                  config_active))
+                                                                                  config_active if not config_active
+                                                                                  else not config_active))
 
     @staticmethod
-    async def disable_configuration(message: types.Message, config, user, config_active, *args, **kwargs):
-        await P2PHandler.handle_configuration(message, config, user, config_active, False,
-                                              'Поиск связок успешно отключен')
-
-    @staticmethod
-    async def enable_configuration(message: types.Message, config, user, config_active, *args, **kwargs):
-        await P2PHandler.handle_configuration(message, config, user, config_active, True,
-                                              'Поиск связок успешно активирован')
+    async def enable_configuration(message: types.Message, user: UserFullDto, config: Config, config_active):
+        await P2PHandler.REST_SERVICE.enable_user_configuration(user.id)
+        await message.answer('Поиск связок успешно активирован',
+                             reply_markup=ReplyKeyboard.get_web_app_conf_keyboard(config.tg_bot.webapp_url,
+                                                                                  not config_active))
 
     def register_methods(self):
         self.dp.register_message_handler(P2PHandler.apply_configuration, state="*",

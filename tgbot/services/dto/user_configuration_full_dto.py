@@ -23,19 +23,18 @@ class UserConfigurationFullDto:
     deleted: bool
     id: UUID = None
 
-    def __init__(self, model):
-        self.user_id = model.user_id
-        self.asset = model.asset
-        self.fiat = model.fiat
-        self.deposit = model.deposit
-        self.spread_from = model.spread_from
-        self.spread_to = model.spread_to
-        self.exchange_sell = model.exchange_sell
-        self.exchange_buy = model.exchange_buy
-        self.trade_type_sell = model.trade_type_sell
-        self.trade_type_buy = model.trade_type_buy
-        self.payment_sell = model.payment_sell
-        self.payment_buy = model.payment_buy
-        self.id = model.id
-        self.user = UserFullDto(model.user)
-        self.deleted = model.deleted
+    def __init__(self, payload: dict):
+        self.user_id = payload.get('userId', None)
+        self.asset = payload.get('asset', None)
+        self.fiat = payload.get('fiat', None)
+        self.deposit = payload.get('deposit', None)
+        self.spread_from = payload.get('spreadFrom', None)
+        self.spread_to = payload.get('spreadTo', None)
+        self.exchange_sell = payload.get('exchangeSell', None)
+        self.exchange_buy = payload.get('exchangeBuy', None)
+        self.trade_type_sell = payload.get('tradeTypeSell', None)
+        self.trade_type_buy = payload.get('tradeTypeBuy', None)
+        self.payment_sell = payload.get('paymentSell', None)
+        self.payment_buy = payload.get('paymentBuy', None)
+        self.id = payload.get('id', None)
+        self.deleted = payload.get('deleted', None)
