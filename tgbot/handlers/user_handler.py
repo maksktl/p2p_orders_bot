@@ -46,8 +46,9 @@ class UserHandler(BaseHandler):
         await message.bot.send_invoice(message.chat.id, **item.generate_invoice(), payload="1")
 
     @staticmethod
-    async def process_pre_checkout_query(query: PreCheckoutQuery, user):
+    async def process_pre_checkout_query(query: PreCheckoutQuery):
         await query.bot.answer_pre_checkout_query(pre_checkout_query_id=query.id, ok=True)
+        user = await RestService.get_instance().get_user_by_telegram_id(query.from_user.id)
         await RestService.get_instance().grant_access_user(user.id, 1)
         await query.bot.send_message(chat_id=query.from_user.id, text="Спасибо за покупку! \n"
                                                                       "Теперь вы имеете полный доступ к боту!"
@@ -84,7 +85,6 @@ class UserHandler(BaseHandler):
                                            f'\n' + config_text,
                                    reply_markup=ReplyKeyboard.get_web_app_conf_keyboard(config.tg_bot.webapp_url,
                                                                                         config_active))
-
 
     @staticmethod
     async def default_message(message: Message):
