@@ -3,6 +3,7 @@ from aiogram.types import Message
 
 from tgbot.handlers.base import BaseHandler
 from tgbot.keyboards.reply import ReplyKeyboard
+from tgbot.services.RestService import RestService
 
 
 class AdminHandler(BaseHandler):
@@ -30,8 +31,15 @@ class AdminHandler(BaseHandler):
     async def grant_access(message: Message):
         command, user_tg_id = message.text.split()
         user_tg_id = int(user_tg_id)
+        user = await RestService.get_instance().get_user_by_telegram_id(user_tg_id)
+        if not user:
+            await message.answer(f'Пользователь с id {user_tg_id} не найден')
+            return
         bot_access = '/grant_access' == command
-        await UserService.get_instance().set_user_settings(user_tg_id, bot_access=bot_access)
+        if bot_access:
+            await RestService.get_instance().grant_access_user(user.id, period=1)
+        else:
+            await RestService.get_instance().revoke_access_user(user.id)
         await message.answer(
             f'<a href="tg://user?id={user_tg_id}">Пользователь</a> {"получил" if bot_access else "потерял"} доступ к боту')
 
@@ -40,7 +48,14 @@ class AdminHandler(BaseHandler):
         command, user_tg_id = message.text.split()
         user_tg_id = int(user_tg_id)
         admin = '/promote' == command
-        await UserService.get_instance().set_user_settings(user_tg_id, admin=admin)
+        user = await RestService.get_instance().get_user_by_telegram_id(user_tg_id)
+        if not user:
+            await message.answer(f'Пользователь с id {user_tg_id} не найден')
+            return
+        if admin:
+            await RestService.get_instance().promote_user(user.id)
+        else:
+            await RestService.get_instance().demote_user(user.id)
         await message.answer(
             f'<a href="tg://user?id={user_tg_id}">Пользователь</a> {"получил" if admin else "потерял"} права администратора')
 

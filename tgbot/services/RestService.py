@@ -102,3 +102,37 @@ class RestService:
         except:
             return []
         return [StepFullDto(payload) for payload in response]
+
+    async def grant_access_user(self, user_id: UUID, period: int):
+        r = RequestObject(
+            url=f'{self._config.api_base_url}/api/v1/private/users/{user_id}/grant_access/{period}',
+            method='PUT')
+        await self._make_request(r)
+
+    async def revoke_access_user(self, user_id: UUID):
+        r = RequestObject(
+            url=f'{self._config.api_base_url}/api/v1/private/users/{user_id}/revoke_access',
+            method='PUT')
+        await self._make_request(r)
+
+    async def promote_user(self, user_id: UUID):
+        r = RequestObject(
+            url=f'{self._config.api_base_url}/api/v1/private/users/{user_id}/promote',
+            method='PUT')
+        await self._make_request(r)
+
+    async def demote_user(self, user_id: UUID):
+        r = RequestObject(
+            url=f'{self._config.api_base_url}/api/v1/private/users/{user_id}/demote',
+            method='PUT')
+        await self._make_request(r)
+
+    async def get_user_by_telegram_id(self, telegram_id: int) -> Optional[UserFullDto]:
+        r = RequestObject(
+            url=f'{self._config.api_base_url}/api/v1/private/users/telegram/{telegram_id}',
+            method='GET')
+        try:
+            response = await self._make_request(r, True)
+        except:
+            return None
+        return UserFullDto(response)
