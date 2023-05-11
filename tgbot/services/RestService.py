@@ -129,7 +129,7 @@ class RestService:
 
     async def get_user_by_telegram_id(self, telegram_id: int) -> Optional[UserFullDto]:
         r = RequestObject(
-            url=f'{self._config.api_base_url}/api/v1/private/users/getByTelegramId?telegramId{telegram_id}',
+            url=f'{self._config.api_base_url}/api/v1/private/users/getByTelegramId?telegramId={telegram_id}',
             method='GET')
         try:
             response = await self._make_request(r, True)
