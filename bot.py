@@ -42,7 +42,7 @@ async def main():
     logging.basicConfig(
         level=logging.INFO,
         format=u'%(filename)s:%(lineno)d #%(levelname)-8s [%(asctime)s] - %(name)s - %(message)s',
-        #filename='tgbot.log'
+        filename='tgbot.log'
     )
     logger.info("Starting bot")
     config = Config.get_instance(".env")
