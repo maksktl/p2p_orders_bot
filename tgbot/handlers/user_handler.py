@@ -5,6 +5,7 @@ from tgbot.config import Config
 from tgbot.handlers.base import BaseHandler
 from tgbot.keyboards.reply import ReplyKeyboard
 from tgbot.misc.Item import Item
+from tgbot.services.RestService import RestService
 from tgbot.services.dto.user_configuration_full_dto import UserConfigurationFullDto
 
 
@@ -45,8 +46,9 @@ class UserHandler(BaseHandler):
         await message.bot.send_invoice(message.chat.id, **item.generate_invoice(), payload="1")
 
     @staticmethod
-    async def process_pre_checkout_query(query: PreCheckoutQuery):
+    async def process_pre_checkout_query(query: PreCheckoutQuery, user):
         await query.bot.answer_pre_checkout_query(pre_checkout_query_id=query.id, ok=True)
+        await RestService.get_instance().grant_access_user(user.id, 1)
         await query.bot.send_message(chat_id=query.from_user.id, text="Спасибо за покупку! \n"
                                                                       "Теперь вы имеете полный доступ к боту!"
                                                                       "\n"
